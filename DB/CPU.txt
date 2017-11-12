@@ -1,0 +1,21 @@
+CPU
+Intel Core i7 7700K
+500
+Intel
+2015
+1151
+Немає
+20
+4200
+4
+Images/Intel7700K.png
+AMD A8-7670K
+250
+AMD
+2015
+FM2+
+Radeon R7
+40
+3600
+4
+Images/AMD7670K.jpg

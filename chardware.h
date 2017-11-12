@@ -15,6 +15,10 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 using namespace std;
+
+int PowTwo(int);
+
+
 //Інформація для створення апаратного забезпечення
 struct DataHW
 {
@@ -27,7 +31,6 @@ struct DataHW
     QString soket;
     QString GChip;
     int Cash;
-    int Powerty;
     int maxmem;
     int canal_count;
     QString canal_type;
@@ -37,6 +40,8 @@ struct DataHW
     int Mfrequency;
     int Cfrequency;
     QString image;
+    float pcxv;
+    int pcxx;
 
 
 };
@@ -57,8 +62,9 @@ public:
 
     cHardware();
     virtual float getGrade() = 0;
-    virtual void Show(QTableWidget*,int) = 0;
+    virtual void Show(QTextBrowser*,QLabel*) = 0;
     QString GetName();
+    QString GetImage();
 };
 
 //Клас процесора
@@ -69,14 +75,14 @@ private:
     int cernel;
     QString GChip;
     int Cash;
-    int Powerty;
     QString soket;
 public:
     cCPU();
     cCPU(DataHW*);
     float getGrade();
-    void Show(QTableWidget*,int);
     void Show(QTextBrowser*,QLabel*);
+    QString GetSoket();
+//    QString GetImage();
 
 };
 
@@ -90,7 +96,9 @@ public:
     cOZU();
     cOZU(DataHW*);
     float getGrade();
-    void Show(QTableWidget*,int);
+    void Show(QTextBrowser*,QLabel*);
+//      QString GetImage();
+
 };
 
 class cMotherBoard:public cHardware
@@ -100,11 +108,18 @@ private:
     int maxmem;
     int canal_count;
     QString canal_type;
+    float pcxv;
+    int pcxx;
 public:
     cMotherBoard();
     cMotherBoard(DataHW*);
     float getGrade();
-    void Show(QTableWidget*,int);
+    void Show(QTextBrowser*,QLabel*);
+    int GetCardPr();
+    QString GetSoket();
+//      QString GetImage();
+
+
 
 };
 
@@ -116,19 +131,25 @@ private:
     int Mfrequency;
     int Cfrequency;
     float memory;
+    float pcxv;
+    int pcxx;
 public:
     cVideoCard();
     cVideoCard(DataHW*);
-    void Show(QTableWidget*,int);
     float getGrade();
+    void Show(QTextBrowser*,QLabel*);
+    int GetCardPr();
+//      QString GetImage();
 
 
 };
 
 struct DataComp
 {
-    cCPU CPU;
-   // cOZU OZU;
+   cCPU * CPU;
+   cOZU * OZU[2];
+   cMotherBoard * MB;
+   cVideoCard * VC;
 
 };
 
@@ -159,7 +180,6 @@ public:
                 DHW->creator = MyText.readLine();
                 DHW->year = MyText.readLine().toInt();
                 DHW->soket = MyText.readLine();
-                DHW->Powerty = MyText.readLine().toInt();
                 DHW->GChip = MyText.readLine();
                 DHW->Cash = MyText.readLine().toInt();
                 DHW->frequency = MyText.readLine().toInt();
@@ -184,6 +204,8 @@ public:
                 DHW->canal_count = MyText.readLine().toInt();
                 DHW->canal_type = MyText.readLine();
                 DHW->maxmem = MyText.readLine().toInt();
+                DHW->pcxv = MyText.readLine().toFloat();
+                DHW->pcxx = MyText.readLine().toInt();
                  DHW->image = MyText.readLine();
                 T *  NT = new T(DHW);
                 HList << NT;
@@ -222,6 +244,8 @@ public:
                     DHW->memory = MyText.readLine().toInt();
                     DHW->DirectX = MyText.readLine().toInt();
                     DHW->OpenGl = MyText.readLine().toFloat();
+                    DHW->pcxv = MyText.readLine().toFloat();
+                    DHW->pcxx = MyText.readLine().toInt();
                      DHW->image = MyText.readLine();
                     T *  NT = new T(DHW);
                     HList << NT;
@@ -233,17 +257,9 @@ public:
             FileM.close();
 
     }
-    void print(QTableWidget* QTW)
-    {
-        QTW->setRowCount(HList.size());
-        int i = 0;
-        foreach(T * HW,HList)
-        {
-            HW->Show(QTW,i++);
-        }
-    }
     void print(QListWidget* QLW)
     {
+        QLW->clear();
         foreach( T * item, HList ) {
             QListWidgetItem* listItem = new QListWidgetItem( item->GetName() );
 
@@ -253,7 +269,18 @@ public:
     }
     void ShowInf(int i,QTextBrowser* QTB,QLabel * QL)
     {
+        if( i < HList.size() && i >= 0)
+        {
         HList[i]->Show(QTB,QL);
+        }
+        else
+        {
+            return;
+        }
+    }
+    T* getEl(int i)
+    {
+        return HList[i];
     }
 };
 
@@ -263,9 +290,27 @@ public:
 class cComputer
 {
 private:
-    cCPU CPU;
-    int grade;
+    cCPU *CPU;
+    cOZU *OZU[2];
+    cMotherBoard * MB;
+    cVideoCard * VC;
+    float grade;
     int price;
+public:
+    cComputer();
+    cComputer(DataComp*);
+    float getGrade();
+    void SetCPU(cCPU*);
+    int SetOZU(cOZU*);
+    void SetMB(cMotherBoard*);
+    void SetVC(cVideoCard*);
+    void DelCPU();
+    void DelOZU(int);
+    bool DelMB();
+    void DelVC();
+    void Show(QTextBrowser*);
+    void Show(QLabel*[5]);
+
 };
 
 
@@ -279,4 +324,6 @@ private:
     cComputer minimum;
 
 };
+
+
 #endif // CHARDWARE_H
