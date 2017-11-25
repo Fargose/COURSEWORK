@@ -1,0 +1,11 @@
+VC
+Radeon RX 550
+100
+AMD
+2015
+1206
+7000
+2
+12
+4.5
+D:/Kursova/FerumChecker/Images/RX550.jpg

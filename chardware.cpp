@@ -1,5 +1,6 @@
 #include "chardware.h"
 
+
 cHardware::cHardware()
 {
 
@@ -8,6 +9,21 @@ cHardware::cHardware()
 QString cHardware::GetName()
 {
     return name;
+}
+
+int cHardware::GetPrice()
+{
+    return price;
+}
+
+QString cHardware::GetImage()
+{
+    return image;
+}
+
+int cHardware::GetYear()
+{
+    return year;
 }
 
 cCPU::cCPU()
@@ -26,7 +42,6 @@ cCPU::cCPU(DataHW * _d)
     soket = _d->soket;
     Cash = _d->Cash;
     GChip = _d->GChip;
-    Powerty = _d->Powerty;
     image = _d->image;
 }
 
@@ -35,47 +50,35 @@ float cCPU::getGrade()
     return 5;
 }
 
-void cCPU::Show(QTableWidget * QTW, int i)
-{
-        QTableWidgetItem * qtw = new QTableWidgetItem(name);
-        QTW->setItem(i,0,qtw);
-        qtw = new QTableWidgetItem(QString::number(price) +" $");
-        QTW->setItem(i,1,qtw);
-        qtw = new QTableWidgetItem(creator);
-        QTW->setItem(i,2,qtw);
-        qtw = new QTableWidgetItem(QString::number(year));
-        QTW->setItem(i,3,qtw);
-        qtw = new QTableWidgetItem(soket);
-        QTW->setItem(i,4,qtw);
-        qtw = new QTableWidgetItem(QString::number(Powerty));
-        QTW->setItem(i,5,qtw);
-        qtw = new QTableWidgetItem(GChip);
-        QTW->setItem(i,6,qtw);
-        qtw = new QTableWidgetItem(QString::number(Cash)+ "Mb");
-        QTW->setItem(i,7,qtw);
-        qtw = new QTableWidgetItem(QString::number(frequency)+ " GHz");
-        QTW->setItem(i,8,qtw);
-        qtw = new QTableWidgetItem(QString::number(cernel));
-        QTW->setItem(i,9,qtw);
-}
+
 
 void cCPU::Show(QTextBrowser * QTB, QLabel * QL)
 {
     QTB->clear();
     QTB->append("Назва: " + name);
-    QTB->append("Ціна: " + QString::number(price));
+    QTB->append("Ціна: " + QString::number(price) + " $");
     QTB->append("Виробник: " + creator);
     QTB->append("Рік виробництва: " + QString::number(year));
     QTB->append("Сокет: " + soket);
-    QTB->append("Питома потужність: " + QString::number(Powerty));
     QTB->append("Графічний чіп: " + GChip) ;
-    QTB->append("Обсяг кешу: " + QString::number(Cash));
-    QTB->append("Частота: " + QString::number(frequency));
+    QTB->append("Обсяг кешу: " + QString::number(Cash) + " Mb");
+    QTB->append("Частота: " + QString::number(frequency) + " GHz");
     QTB->append("Кількість ядер: " + QString::number(cernel));
-    QPixmap MyPix(image);
+    QPixmap MyPix;
+    if(!MyPix.load(image))
+    {
+        image = "Images/NoPhoto.jpg";
+        MyPix.load(image);
+    }
     QL->setScaledContents(true);
+   QL->setGeometry(520,QL->y(),400,300);
     QL->setPixmap(MyPix);
 
+}
+
+QString cCPU::GetSoket()
+{
+    return soket;
 }
 
 
@@ -95,6 +98,8 @@ cMotherBoard::cMotherBoard(DataHW * _d)
     canal_count = _d->canal_count;
     canal_type = _d->canal_type;
       image = _d->image;
+      pcxv = _d->pcxv;
+      pcxx  = _d->pcxx;
 
 }
 
@@ -104,25 +109,42 @@ float cMotherBoard::getGrade()
 
 }
 
-void cMotherBoard::Show(QTableWidget * QTW, int i)
+void cMotherBoard::Show(QTextBrowser * QTB, QLabel * QL)
 {
-    QTableWidgetItem * qtw = new QTableWidgetItem(name);
-    QTW->setItem(i,0,qtw);
-    qtw = new QTableWidgetItem(QString::number(price) +" $");
-    QTW->setItem(i,1,qtw);
-    qtw = new QTableWidgetItem(creator);
-    QTW->setItem(i,3,qtw);
-    qtw = new QTableWidgetItem(QString::number(year));
-    QTW->setItem(i,2,qtw);
-    qtw = new QTableWidgetItem(soket);
-    QTW->setItem(i,4,qtw);
-    qtw = new QTableWidgetItem(QString::number(canal_count));
-    QTW->setItem(i,5,qtw);
-    qtw = new QTableWidgetItem(canal_type);
-    QTW->setItem(i,6,qtw);
-    qtw = new QTableWidgetItem(QString::number(maxmem) + "Gb");
-    QTW->setItem(i,7,qtw);
+    QTB->clear();
+    QTB->append("Назва: " + name);
+    QTB->append("Ціна: " + QString::number(price) + " $");
+    QTB->append("Виробник: " + creator);
+    QTB->append("Рік виробництва: " + QString::number(year));
+    QTB->append("Сокет процесора " + soket);
+    QTB->append("Тип каналів памя'ті:: " + canal_type);
+    QTB->append("Кількість каналів памя'ті: " +QString::number(canal_count));
+    QTB->append("Максимальний обсяг памя'ті: " +QString::number(maxmem) + " Gb");
+    QTB->append("Слот: PCiE " +QString::number(pcxv) + ".0 x" + QString::number(pcxx));
+  QPixmap MyPix;
+  if(!MyPix.load(image))
+  {
+      image = "Images/NoPhoto.jpg";
+      MyPix.load(image);
+  }
+    QL->setScaledContents(true);
+   QL->setGeometry(520,QL->y(),400,300);
+    QL->setPixmap(MyPix);
 }
+
+int cMotherBoard::GetCardPr()
+{
+    int x = 0;
+    x = pow(2.0,((int)pcxv+1)+PowTwo(pcxx));
+    return x;
+}
+
+QString cMotherBoard::GetSoket()
+{
+    return soket;
+}
+
+
 
 cOZU::cOZU()
 {
@@ -148,23 +170,33 @@ float cOZU::getGrade()
     return 5;
 }
 
-void cOZU::Show(QTableWidget * QTW, int i)
+void cOZU::Show(QTextBrowser * QTB, QLabel * QL)
 {
-    QTableWidgetItem * qtw = new QTableWidgetItem(name);
-    QTW->setItem(i,0,qtw);
-    qtw = new QTableWidgetItem(QString::number(price) +" $");
-    QTW->setItem(i,1,qtw);
-    qtw = new QTableWidgetItem(creator);
-    QTW->setItem(i,3,qtw);
-    qtw = new QTableWidgetItem(QString::number(year));
-    QTW->setItem(i,2,qtw);
-    qtw = new QTableWidgetItem(QString::number(frequency) + "MGz");
-    QTW->setItem(i,4,qtw);
-    qtw = new QTableWidgetItem(canal_type);
-    QTW->setItem(i,5,qtw);
-    qtw = new QTableWidgetItem(QString::number(memory) + "Gb");
-    QTW->setItem(i,6,qtw);
+    QTB->clear();
+    QTB->append("Назва: " + name);
+    QTB->append("Ціна: " + QString::number(price) + " $");
+    QTB->append("Виробник: " + creator);
+    QTB->append("Рік виробництва: " + QString::number(year));
+    QTB->append("Частота пам'яті: " + QString::number(frequency) + " MHz");
+    QTB->append("Тип памя'ті: " + canal_type);
+    QTB->append("Обсяг памя'ті: " +QString::number(memory) + " Gb");
+    QPixmap MyPix;
+    if(!MyPix.load(image))
+    {
+        image = "Images/NoPhoto.jpg";
+        MyPix.load(image);
+    }
+    QL->setScaledContents(true);
+    QL->setGeometry(520,QL->y(),400,300);
+    QL->setPixmap(MyPix);
 }
+
+int cOZU::GetMemory()
+{
+    return memory;
+}
+
+
 
 cVideoCard::cVideoCard()
 {
@@ -183,40 +215,758 @@ cVideoCard::cVideoCard(DataHW * _d)
     DirectX = _d->DirectX;
     OpenGl = _d->OpenGl;
       image = _d->image;
+      pcxv = _d->pcxv;
+      pcxx = _d->pcxx;
 }
 
-void cVideoCard::Show(QTableWidget * QTW, int i)
-{
-    QTableWidgetItem * qtw = new QTableWidgetItem(name);
-    QTW->setItem(i,0,qtw);
-    qtw = new QTableWidgetItem(QString::number(price) +" $");
-    QTW->setItem(i,1,qtw);
-    qtw = new QTableWidgetItem(creator);
-    QTW->setItem(i,3,qtw);
-    qtw = new QTableWidgetItem(QString::number(year));
-    QTW->setItem(i,2,qtw);
-    qtw = new QTableWidgetItem(QString::number(Cfrequency) + "MGz");
-    QTW->setItem(i,4,qtw);
-    qtw = new QTableWidgetItem(QString::number(Mfrequency) + "MGz");
-    QTW->setItem(i,5,qtw);
-    QString buf;
-    if(memory >=8)
-    {
-        buf = "Mb";
-    }
-    else
-    {
-        buf = "Gb";
-    }
-    qtw = new QTableWidgetItem(QString::number(memory) + buf);
-    QTW->setItem(i,6,qtw);
-    qtw = new QTableWidgetItem(QString::number(DirectX));
-    QTW->setItem(i,7,qtw);
-    qtw = new QTableWidgetItem(QString::number(OpenGl));
-    QTW->setItem(i,8,qtw);
-}
+
 
 float cVideoCard::getGrade()
 {
     return 5;
+}
+
+void cVideoCard::Show(QTextBrowser * QTB, QLabel * QL)
+{
+    QTB->clear();
+    QTB->append("Назва: " + name);
+    QTB->append("Ціна: " + QString::number(price) + " $");
+    QTB->append("Виробник: " + creator);
+    QTB->append("Рік виробництва: " + QString::number(year));
+    QTB->append("Інтерфейс: PCiE " +QString::number(pcxv) + ".0 x" + QString::number(pcxx));
+    QTB->append("Частота пам'яті: " + QString::number(Mfrequency) + " MGz");
+    QTB->append("Частота ядра: " + QString::number(Cfrequency) +" MGz" );
+    QTB->append("Обсяг памя'ті: " +QString::number(memory) + " Gb");
+    QTB->append("Підтримка DirectX " +QString::number(DirectX));
+    QTB->append("Підтримка OpenGL " +QString::number(OpenGl));
+    QPixmap MyPix;
+    if(!MyPix.load(image))
+    {
+        image = "Images/NoPhoto.jpg";
+        MyPix.load(image);
+    }
+    QL->setScaledContents(true);
+    QL->setGeometry(520,QL->y(),400,300);
+    QL->setPixmap(MyPix);
+}
+
+int cVideoCard::GetCardPr()
+{
+    int x = 0;
+    x = pow(2.0,((int)pcxv+1)+PowTwo(pcxx));
+    return x;
+}
+
+
+
+cComputer::cComputer()
+{
+    CPU = NULL;
+    OZU[0] = NULL;
+    OZU[1] = NULL;
+    MB = NULL;
+    VC = NULL;
+    HD = NULL;
+    memozu = 0;
+    price = 0;
+
+
+}
+
+cComputer::cComputer(DataComp * _d)
+{
+    CPU = _d->CPU;
+    OZU[1] = _d->OZU[1];
+    OZU[0] = _d->OZU[0];
+    memozu = OZU[0]->GetMemory() + OZU[1]->GetMemory();
+    MB = _d->MB;
+    VC = _d->VC;
+    HD = _d->HW;
+
+}
+
+bool cComputer::SetCPU(cCPU * _CPU)
+{
+
+    if(MB == NULL)
+    {
+        QMessageBox::information(0, "Information", "Встановіть материнську плату для додавання інших елементів.");
+        return false;
+    }
+    else
+    {
+        if(_CPU->GetSoket() != MB->GetSoket())
+        {
+             QMessageBox::information(0, "Information", "Не вдається установити процесор. Сокет материської плати відрізняється від процесора.");
+             return false;
+        }
+        else
+        {
+            if(CPU==NULL)
+            CPU = _CPU;
+            else
+                price-=CPU->GetPrice();
+            CPU = _CPU;
+            price+=_CPU->GetPrice();
+
+            return true;
+        }
+    }
+
+}
+
+int cComputer::SetOZU(cOZU * _OZU)
+{
+
+    if(MB == NULL)
+    {
+        QMessageBox::information(0, "Information", "Встановіть материнську плату для додавання інших елементів.");
+
+    }
+    else if(OZU[0] != NULL && OZU[1] == NULL)
+    {
+    OZU[1] = OZU[0];
+    OZU[0] = _OZU;
+    price+=_OZU->GetPrice();
+    memozu+=_OZU->GetMemory();
+    return 0;
+    }
+    else if(OZU[0] != NULL && OZU[1] != NULL)
+    {
+        price-=OZU[0]->GetPrice();
+        memozu-=OZU[0]->GetMemory();
+        OZU[1] = OZU[0];
+        OZU[0] = _OZU;
+        price+=_OZU->GetPrice();
+        memozu+=_OZU->GetMemory();
+        return 0;
+    }
+    else
+    {
+        price+=_OZU->GetPrice();
+        memozu+=_OZU->GetMemory();
+        OZU[0] = _OZU;
+        return 1;
+    }
+    return -1;
+}
+
+bool cComputer::SetMB(cMotherBoard * _MB)
+{
+
+    if(MB!=NULL)
+    {
+        QMessageBox* pmbx =
+                            new QMessageBox("Усунути материнську плату?",
+                            "Ви бажаєте усунути материнську плату. Це усуне всі інші компоненти збірки. Бажаєте продовжити?",
+                            QMessageBox::Information,
+                            QMessageBox::Yes,
+                            QMessageBox::No,
+                            QMessageBox::Cancel | QMessageBox::Escape);
+        int n = pmbx->exec();
+        delete pmbx;
+        if (n == QMessageBox::Yes)
+        {
+            if(MB!=NULL)
+            {
+            price-=MB->GetPrice();
+            }
+            MB = NULL;
+            if(CPU!=NULL)
+            {
+            price-=CPU->GetPrice();
+            }
+            CPU=NULL;
+            if(OZU[0]!=NULL)
+            {
+            price-=OZU[0]->GetPrice();
+            }
+            OZU[0] = NULL;
+            if(VC!=NULL)
+            {
+            price-=VC->GetPrice();
+            }
+            VC = NULL;
+            if(OZU[1]!=NULL)
+            {
+            price-=OZU[1]->GetPrice();
+            }
+            OZU[1] = NULL;
+            if(HD != NULL)
+            {
+            price-=HD->GetPrice();
+            }
+            HD = NULL;
+            memozu = 0;
+
+
+    MB=_MB;
+
+    price+=MB->GetPrice();
+        }
+
+}
+    else
+    {
+        MB=_MB;
+
+        price+=MB->GetPrice();
+    }
+}
+
+bool cComputer::SetVC(cVideoCard * _VC)
+{
+    if(MB == NULL)
+    {
+         QMessageBox::information(0, "Information", "Встановіть материнську плату для додавання інших елементів.");
+         return false;
+    }
+    else
+    {
+        if(MB->GetCardPr() < _VC->GetCardPr())
+        {
+               QMessageBox::information(0, "Information", "Пропускна властивість материнської слота материнської плати менша за інтерфейс відеокарти. Можлива робота не в повну силу.");
+
+        }
+        if(VC!=NULL)
+        {
+        price-=VC->GetPrice();
+        }
+        VC =_VC;
+        price+=VC->GetPrice();
+        return true;
+    }
+}
+
+bool cComputer::SetHW(cHardDrive * _HW)
+{
+    if(MB == NULL)
+    {
+         QMessageBox::information(0, "Information", "Встановіть материнську плату для додавання інших елементів.");
+         return false;
+    }
+    else
+    {
+        if(HD!=NULL)
+        {
+      price-=HD->GetPrice();
+        }
+      HD = _HW;
+      price+=HD->GetPrice();
+      return true;
+    }
+}
+
+void cComputer::DelCPU()
+{
+    if(CPU!=NULL)
+    price-=CPU->GetPrice();
+    CPU = NULL;
+}
+
+void cComputer::DelOZU(int i)
+{
+    if(OZU[i]!=NULL)
+    price-=OZU[i]->GetPrice();
+    memozu-=OZU[i]->GetMemory();
+    OZU[i] = NULL;
+}
+
+bool cComputer::DelMB()
+{
+    if(MB!=NULL)
+    {
+    QMessageBox* pmbx =
+                        new QMessageBox("Усунути материнську плату?",
+                        "Ви бажаєте усунути материнську плату. Це усуне всі інші компоненти збірки. Бажаєте продовжити?",
+                        QMessageBox::Information,
+                        QMessageBox::Yes,
+                        QMessageBox::No,
+                        QMessageBox::Cancel | QMessageBox::Escape);
+    int n = pmbx->exec();
+    delete pmbx;
+    if (n == QMessageBox::Yes)
+    {
+        if(MB!=NULL)
+        {
+        price-=MB->GetPrice();
+        }
+        MB = NULL;
+        if(CPU!=NULL)
+        {
+        price-=CPU->GetPrice();
+        }
+        CPU=NULL;
+        if(OZU[0]!=NULL)
+        {
+        price-=OZU[0]->GetPrice();
+        }
+        OZU[0] = NULL;
+        if(VC!=NULL)
+        {
+        price-=VC->GetPrice();
+        }
+        VC = NULL;
+        if(OZU[1]!=NULL)
+        {
+        price-=OZU[1]->GetPrice();
+        }
+        OZU[1] = NULL;
+        if(HD != NULL)
+        {
+        price-=HD->GetPrice();
+        }
+        HD = NULL;
+        memozu = 0;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+    }
+    return false;
+
+}
+
+void cComputer::DelVC()
+{
+    if(VC!=NULL)
+    {
+        price-=VC->GetPrice();
+    }
+    VC = NULL;
+}
+
+void cComputer::DelHW()
+{if(VC!=NULL)
+    {
+        price-=HD->GetPrice();
+    }
+    HD =NULL;
+}
+
+void cComputer::Show(QTextBrowser * QTB)
+{
+    QTB->clear();
+    if(CPU!=NULL)
+    {
+        QTB->append("Процесор: " + CPU->GetName());
+    }
+    else
+    {
+        QTB->append("Процесор: - " );
+    }
+    if(VC!=NULL)
+    {
+        QTB->append("Відеокарта: " + VC->GetName());
+    }
+    else
+    {
+        QTB->append("Відеокарта: - " );
+    }
+    QTB->append("ОЗУ: " + QString::number(memozu) + " Gb");
+    QTB->append("Ціна: " + QString::number(price) + "$");
+
+}
+
+void cComputer::Show(QLabel * _lab[] )
+{
+    if(CPU!=NULL)
+    {
+        QPixmap MyPix;
+        if(!MyPix.load(CPU->GetImage()))
+        {
+
+            MyPix.load("Images/NoPhoto.jpg");
+        }
+        _lab[0]->setScaledContents(true);
+        _lab[0]->setPixmap(MyPix);
+
+    }
+    else
+    {
+         QPixmap MyPix;
+         MyPix.load("");
+         _lab[0]->setScaledContents(true);
+         _lab[0]->setPixmap(MyPix);
+    }
+    if(MB!=NULL)
+    {
+        QPixmap MyPix;
+        if(!MyPix.load(MB->GetImage()))
+        {
+
+            MyPix.load("Images/NoPhoto.jpg");
+        }
+        _lab[1]->setScaledContents(true);
+        _lab[1]->setPixmap(MyPix);
+    }
+    else
+    {
+         QPixmap MyPix;
+         MyPix.load("");
+         _lab[1]->setScaledContents(true);
+         _lab[1]->setPixmap(MyPix);
+    }
+    if(VC!=NULL)
+    {
+        QPixmap MyPix;
+        if(!MyPix.load(VC->GetImage()))
+        {
+
+            MyPix.load("Images/NoPhoto.jpg");
+        }
+        _lab[2]->setScaledContents(true);
+        _lab[2]->setPixmap(MyPix);
+    }
+    else
+    {
+         QPixmap MyPix;
+         MyPix.load("");
+         _lab[2]->setScaledContents(true);
+         _lab[2]->setPixmap(MyPix);
+    }
+    if(OZU[0]!=NULL)
+    {
+        QPixmap MyPix;
+        if(!MyPix.load(OZU[0]->GetImage()))
+        {
+
+            MyPix.load("Images/NoPhoto.jpg");
+        }
+        _lab[3]->setScaledContents(true);
+        _lab[3]->setPixmap(MyPix);
+    }
+    else
+    {
+         QPixmap MyPix;
+         MyPix.load("");
+         _lab[3]->setScaledContents(true);
+         _lab[3]->setPixmap(MyPix);
+    }
+    if(OZU[1]!=NULL)
+    {
+        QPixmap MyPix;
+        if(!MyPix.load(OZU[1]->GetImage()))
+        {
+
+            MyPix.load("Images/NoPhoto.jpg");
+        }
+        _lab[4]->setScaledContents(true);
+        _lab[4]->setPixmap(MyPix);
+    }
+    else
+    {
+         QPixmap MyPix;
+         MyPix.load("");
+         _lab[4]->setScaledContents(true);
+         _lab[4]->setPixmap(MyPix);
+    }
+    if(HD !=NULL)
+    {
+        QPixmap MyPix;
+        if(!MyPix.load(HD->GetImage()))
+        {
+
+            MyPix.load("Images/NoPhoto.jpg");
+        }
+        _lab[5]->setScaledContents(true);
+        _lab[5]->setPixmap(MyPix);
+    }
+    else
+    {
+         QPixmap MyPix;
+         MyPix.load("");
+         _lab[5]->setScaledContents(true);
+         _lab[5]->setPixmap(MyPix);
+    }
+}
+
+int cComputer::GetPrice()
+{
+    return price;
+}
+
+int cComputer::GetMemOzu()
+{
+    return memozu;
+}
+
+bool cComputer::IsFull()
+{
+    if(CPU==NULL)
+        return false;
+    if(MB == NULL)
+        return false;
+    if(OZU[0] == NULL && OZU[1] == NULL)
+        return false;
+    if(VC == NULL)
+        return false;
+    if(HD == NULL)
+        return false;
+    return true;
+}
+
+
+
+cCPU *cComputer::GetCpu()
+{
+    return CPU;
+}
+
+cMotherBoard *cComputer::GetMB()
+{
+    return MB;
+}
+
+cVideoCard *cComputer::GetVC()
+{
+    return VC;
+}
+
+cHardDrive *cComputer::GetHW()
+{
+    return HD;
+}
+
+cOZU *cComputer::GetOZU(int i)
+{
+    return OZU[i];
+}
+
+int cComputer::CheckSoftware(cSoftware * _SW)
+{
+    if(IsFull() == false)
+    {
+        QMessageBox::information(0,"Збірка не повна!","Додайте до збірки елементи, яких не вистачає, щоб перевірити ПЗ.");
+        return -1;
+    }
+    cNeed * _best = _SW->getBest();
+    cNeed * _min = _SW->getMin();
+    QString ResStr = "";
+
+
+    double counter = 0;
+    double res = 0;
+    if(_min->CPU->GetYear() > CPU->GetYear())
+    {
+
+        ResStr+="Процесор (" +CPU->GetName() + ") слабший за мінімально потрібний (" + _min->CPU->GetName() + ")\n";
+        counter++;
+    }
+    if(_min->VC->GetYear() > VC->GetYear())
+    {
+
+        ResStr+="Відеокарта (" +VC->GetName() + ") слабша за мінімально потрібну (" + _min->VC->GetName() + ")\n";
+        counter++;
+    }
+    if(_min->memory > memozu)
+    {
+
+        ResStr+="Недостатньо ОЗУ: " + QString::number(memozu) + " Gb у наявності, " + QString::number(_min->memory)+"Gb мінімально потрібні" " \n";
+        counter++;
+    }
+    if(counter > 0)
+    {
+    QMessageBox::information(0,"Виявлено проблеми!", ResStr);
+    }
+    if(counter == 3)
+    {
+        return 0;
+    }
+    if(_best->CPU->GetName() == CPU->GetName() || _best->CPU->GetYear() <= CPU->GetYear())
+    {
+       res+=35/(1 +counter/2);
+    }
+    if(_best->VC->GetName() == VC->GetName() || _best->VC->GetYear() <= VC->GetYear())
+    {
+        res+=40/(1 +counter/2);
+    }
+    if(_best->memory <= memozu)
+    {
+        res+=25/(1 + counter/2);
+    }
+    if(_best->CPU->GetYear()  > CPU->GetYear() && _min->CPU->GetYear() <= CPU->GetYear())
+    {
+       res+=35/(1 +counter/2 + (_best->CPU->GetYear()  - CPU->GetYear()));
+    }
+    if(_best->VC->GetYear()  > VC->GetYear() && _min->VC->GetYear() <= VC->GetYear())
+    {
+       res+=35/(1 +counter/2 + (_best->VC->GetYear()  - VC->GetYear()));
+    }
+    if(_best->memory > memozu && memozu >= _min->memory)
+    {
+       res+=35/(1 +counter/2 + (_best->memory - memozu));
+    }
+    return (int)res;
+
+
+}
+
+int PowTwo(int n)
+{
+    int pow = 0;
+    for(int i = 1;i<n;i*=2)
+    {
+        pow++;
+    }
+    return pow;
+}
+
+cHardDrive::cHardDrive(DataHW * _d)
+{
+    name = _d->name;
+    price = _d->price;
+    year = _d->year;
+    creator = _d->creator;
+    memory = _d->memory;
+    image =_d->image;
+    canal_type = _d->canal_type;
+}
+
+float cHardDrive::getGrade()
+{
+    return 5;
+}
+
+void cHardDrive::Show(QTextBrowser * QTB, QLabel *QL)
+{
+    QTB->clear();
+    QTB->append("Назва: " + name);
+    QTB->append("Ціна: " + QString::number(price) + " $");
+    QTB->append("Виробник: " + creator);
+    QTB->append("Рік виробництва: " + QString::number(year));
+    QTB->append("Обсяг памя'ті: " +QString::number(memory) + " Gb");
+    QTB->append("Тип пам'яті "  + canal_type);
+    QPixmap MyPix;
+    if(!MyPix.load(image))
+    {
+        image = "Images/NoPhoto.jpg";
+        MyPix.load(image);
+    }
+    QL->setScaledContents(true);
+    QL->setGeometry(520,QL->y(),400,300);
+    QL->setPixmap(MyPix);
+}
+
+cSoftware::cSoftware()
+{
+
+}
+
+
+
+cSoftware::cSoftware(DataHW * _d)
+{
+    name = _d->name;
+    type = _d->type;
+    year = _d->year;
+    creator = _d->creator;
+    best.CPUbuf = _d->bufcpub;
+   best.memory = _d->maxmem;
+   best.VCBuf = _d->bufvcb;
+   minimum.CPUbuf = _d->bufcpum;
+   minimum.VCBuf = _d->bufvcm;
+   minimum.memory = _d->memory;
+    price = _d->price;
+    image = _d->image;
+}
+
+QString cSoftware::GetName()
+{
+    return name;
+}
+
+cNeed *cSoftware::getBest()
+{
+    return &best;
+}
+
+cNeed *cSoftware::getMin()
+{
+    return &minimum;
+}
+
+void cSoftware::Show(QTextBrowser * QTB, QLabel *QL)
+{
+    QTB->clear();
+    QTB->append("Назва: " + name);
+    QTB->append("Ціна: " + QString::number(price) + " $");
+    QTB->append("Розробник: " + creator);
+    QTB->append("Рік виробництва: " + QString::number(year));
+    QTB->append("Мінімальні вимоги: ");
+    QTB->append("Процесор: " + minimum.CPUbuf);
+    QTB->append("Відеокарта: " + minimum.VCBuf);
+    QTB->append("ОЗУ: " + QString::number(minimum.memory) + " Gb");
+    QTB->append("Рекомендовані вимоги: ");
+    QTB->append("Процесор: " + best.CPUbuf);
+    QTB->append("Відеокарта: " + best.VCBuf);
+    QTB->append("ОЗУ: " + QString::number(best.memory) + " Gb");
+    QPixmap MyPix;
+    if(!MyPix.load(image))
+    {
+        image = "Images/NoPhoto.jpg";
+        MyPix.load(image);
+    }
+    QL->setScaledContents(true);
+    QL->setGeometry(580,QL->y(),300,400);
+    QL->setPixmap(MyPix);
+}
+
+bool cSoftware::Verification(cHardList<cCPU> cpuList, cHardList<cVideoCard> vList)
+{
+    for(int i = 0;i<cpuList.getSize();i++)
+    {
+        if(minimum.CPUbuf == cpuList.getEl(i)->GetName())
+        {
+            minimum.CPU = cpuList.getEl(i);
+            break;
+        }
+        if(minimum.CPUbuf != cpuList.getEl(i)->GetName() && i == cpuList.getSize()-1)
+        {
+            QMessageBox::information(0,"Помилка веріфікації","В каталозі немає забезпечення за назвою " + minimum.CPUbuf + ". Програмне забезпечення вилучено.");
+            return false;
+        }
+    }
+    for(int i = 0;i<cpuList.getSize();i++)
+    {
+        if(best.CPUbuf == cpuList.getEl(i)->GetName())
+        {
+            best.CPU = cpuList.getEl(i);
+            break;
+        }
+        if((best.CPUbuf != cpuList.getEl(i)->GetName()) && (i == cpuList.getSize()-1))
+        {
+            QMessageBox::information(0,"Помилка веріфікації","В каталозі немає забезпечення за назвою " + best.CPUbuf + ". Програмне забезпечення вилучено.");
+            return false;
+        }
+    }
+    for(int i = 0;i<vList.getSize();i++)
+    {
+        if(best.VCBuf == vList.getEl(i)->GetName())
+        {
+            best.VC = vList.getEl(i);
+            break;
+        }
+        if(best.VCBuf != vList.getEl(i)->GetName() && i == vList.getSize()-1)
+        {
+            QMessageBox::information(0,"Помилка веріфікації","В каталозі немає забезпечення за назвою " + best.VCBuf + ". Програмне забезпечення вилучено.");
+            return false;
+        }
+    }
+    for(int i = 0;i<vList.getSize();i++)
+    {
+        if(minimum.VCBuf == vList.getEl(i)->GetName())
+        {
+            minimum.VC = vList.getEl(i);
+            break;
+        }
+        if(minimum.VCBuf != vList.getEl(i)->GetName() && i == vList.getSize()-1)
+        {
+            QMessageBox::information(0,"Помилка веріфікації","В каталозі немає забезпечення за назвою " + minimum.VCBuf + ". Програмне забезпечення вилучено.");
+            return false;
+        }
+    }
+    return true;
 }

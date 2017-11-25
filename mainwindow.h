@@ -2,7 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "my_label.h"
+#include "chardware.h"
+#include "dialog_createcomp.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,14 +19,63 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_StartButton_clicked();
+
 
     void on_comboBox_currentIndexChanged(int index);
 
-    void on_listWidget_currentRowChanged(int currentRow);
+
+    void on_pushButton_clicked();
+
+
+
+    void on_MBClicked();
+
+    void on_CPU_Clicked();
+
+    void on_VC_Clicked();
+
+    void on_OZU1_clicked();
+
+    void on_OZU2_clicked();
+
+    void on_HW_clicked();
+
+    void on_MBCh();
+
+    void on_CPUCh();
+
+    void on_VCCh();
+
+    void on_OZU1Ch();
+
+    void on_OZU2Ch();
+
+    void on_HWCh();
+
+
+    void on_listWidget_pressed(const QModelIndex &index);
+
+    void OpenCrComSl();
+
+
+
+
+
+    void on_RefreshButton_clicked();
 
 private:
     Ui::MainWindow *ui;
+    cHardList<cCPU>  ListCPU;
+    cHardList<cMotherBoard>  ListMB;
+    cHardList<cOZU>  ListOZU;
+    cHardList<cVideoCard>  ListVC;
+    cHardList<cHardDrive> ListHW;
+    cHardList<cSoftware> ListSW;
+    cComputer * CurrentComp;
+    QLabel * lbl[6];
+
+
+
 };
 
 #endif // MAINWINDOW_H

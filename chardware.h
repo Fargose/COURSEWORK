@@ -14,20 +14,25 @@
 #include <QPixmap>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QtAlgorithms>
 using namespace std;
+
+int PowTwo(int);
+
+
 //Інформація для створення апаратного забезпечення
 struct DataHW
 {
     int price;
     QString name;
     QString creator;
+    QString type;
     int year;
     int cernel;
     float frequency;
     QString soket;
     QString GChip;
     int Cash;
-    int Powerty;
     int maxmem;
     int canal_count;
     QString canal_type;
@@ -37,6 +42,12 @@ struct DataHW
     int Mfrequency;
     int Cfrequency;
     QString image;
+    float pcxv;
+    int pcxx;
+    QString bufcpub;
+    QString bufcpum;
+    QString bufvcm;
+    QString bufvcb;
 
 
 };
@@ -57,8 +68,11 @@ public:
 
     cHardware();
     virtual float getGrade() = 0;
-    virtual void Show(QTableWidget*,int) = 0;
+    virtual void Show(QTextBrowser*,QLabel*) = 0;
     QString GetName();
+    int GetPrice();
+    QString GetImage();
+    int GetYear();
 };
 
 //Клас процесора
@@ -69,14 +83,14 @@ private:
     int cernel;
     QString GChip;
     int Cash;
-    int Powerty;
     QString soket;
 public:
     cCPU();
     cCPU(DataHW*);
     float getGrade();
-    void Show(QTableWidget*,int);
     void Show(QTextBrowser*,QLabel*);
+    QString GetSoket();
+
 
 };
 
@@ -90,7 +104,10 @@ public:
     cOZU();
     cOZU(DataHW*);
     float getGrade();
-    void Show(QTableWidget*,int);
+    void Show(QTextBrowser*,QLabel*);
+    int GetMemory();
+
+
 };
 
 class cMotherBoard:public cHardware
@@ -100,14 +117,23 @@ private:
     int maxmem;
     int canal_count;
     QString canal_type;
+    float pcxv;
+    int pcxx;
 public:
     cMotherBoard();
     cMotherBoard(DataHW*);
     float getGrade();
-    void Show(QTableWidget*,int);
+    void Show(QTextBrowser*,QLabel*);
+    int GetCardPr();
+    QString GetSoket();
+
+
+
 
 };
 
+
+//Клас відеокарти
 class cVideoCard:public cHardware
 {
 private:
@@ -116,22 +142,55 @@ private:
     int Mfrequency;
     int Cfrequency;
     float memory;
+    float pcxv;
+    int pcxx;
 public:
     cVideoCard();
     cVideoCard(DataHW*);
-    void Show(QTableWidget*,int);
     float getGrade();
+    void Show(QTextBrowser*,QLabel*);
+    int GetCardPr();
+
+
+
+};
+
+class cHardDrive:public cHardware
+{
+private:
+    int memory;
+    QString canal_type;
+public:
+    cHardDrive();
+    cHardDrive(DataHW*);
+    float getGrade();
+    void Show(QTextBrowser*,QLabel*);
 
 
 };
 
 struct DataComp
 {
-    cCPU CPU;
-   // cOZU OZU;
+   cCPU * CPU;
+   cOZU * OZU[2];
+   cMotherBoard * MB;
+   cVideoCard * VC;
+   cHardDrive * HW;
 
 };
 
+//Структура системних вимог
+struct cNeed
+{
+public:
+    QString CPUbuf;
+    QString VCBuf;
+    cCPU* CPU;
+    cVideoCard* VC;
+    int memory;
+
+
+};
 //Список апаратного забезпечення
 template <class T>
 class cHardList
@@ -159,7 +218,6 @@ public:
                 DHW->creator = MyText.readLine();
                 DHW->year = MyText.readLine().toInt();
                 DHW->soket = MyText.readLine();
-                DHW->Powerty = MyText.readLine().toInt();
                 DHW->GChip = MyText.readLine();
                 DHW->Cash = MyText.readLine().toInt();
                 DHW->frequency = MyText.readLine().toInt();
@@ -168,9 +226,10 @@ public:
                 T *  NT = new T(DHW);
                 HList << NT;
             }
-        }
-        MyText.seek(0);
 
+        }
+
+MyText.seek(0);
         if(MyText.readLine().compare("MB") == 0)
         {
             while(!MyText.atEnd())
@@ -184,13 +243,15 @@ public:
                 DHW->canal_count = MyText.readLine().toInt();
                 DHW->canal_type = MyText.readLine();
                 DHW->maxmem = MyText.readLine().toInt();
-                 DHW->image = MyText.readLine();
+                DHW->pcxv = MyText.readLine().toFloat();
+                DHW->pcxx = MyText.readLine().toInt();
+                DHW->image = MyText.readLine();
                 T *  NT = new T(DHW);
                 HList << NT;
             }
         }
         MyText.seek(0);
-        if(MyText.readLine().compare("OZU") == 0)
+         if(MyText.readLine().compare("OZU") == 0)
         {
             while(!MyText.atEnd())
             {
@@ -202,48 +263,82 @@ public:
                 DHW->frequency = MyText.readLine().toInt();
                 DHW->canal_type = MyText.readLine();
                 DHW->memory = MyText.readLine().toInt();
-                 DHW->image = MyText.readLine();
+                DHW->image = MyText.readLine();
                 T *  NT = new T(DHW);
                 HList << NT;
             }
         }
-            MyText.seek(0);
-            if(MyText.readLine().compare("VC") == 0)
-            {
-                while(!MyText.atEnd())
-                {
-                    DataHW * DHW = new DataHW();
-                    DHW->name = MyText.readLine();
-                    DHW->price = MyText.readLine().toInt();
-                    DHW->creator = MyText.readLine();
-                    DHW->year = MyText.readLine().toInt();
-                    DHW->Cfrequency = MyText.readLine().toInt();
-                    DHW->Mfrequency = MyText.readLine().toInt();
-                    DHW->memory = MyText.readLine().toInt();
-                    DHW->DirectX = MyText.readLine().toInt();
-                    DHW->OpenGl = MyText.readLine().toFloat();
-                     DHW->image = MyText.readLine();
-                    T *  NT = new T(DHW);
-                    HList << NT;
-                }
-            }
-            MyText.seek(0);
-            MyText.flush();
-            FileM.flush();
-            FileM.close();
-
-    }
-    void print(QTableWidget* QTW)
-    {
-        QTW->setRowCount(HList.size());
-        int i = 0;
-        foreach(T * HW,HList)
+        MyText.seek(0);
+          if(MyText.readLine().compare("VC") == 0)
         {
-            HW->Show(QTW,i++);
+            while(!MyText.atEnd())
+            {
+                DataHW * DHW = new DataHW();
+                DHW->name = MyText.readLine();
+                DHW->price = MyText.readLine().toInt();
+                DHW->creator = MyText.readLine();
+                DHW->year = MyText.readLine().toInt();
+                DHW->Cfrequency = MyText.readLine().toInt();
+                DHW->Mfrequency = MyText.readLine().toInt();
+                DHW->memory = MyText.readLine().toInt();
+                DHW->DirectX = MyText.readLine().toInt();
+                DHW->OpenGl = MyText.readLine().toFloat();
+                DHW->pcxv = MyText.readLine().toFloat();
+                DHW->pcxx = MyText.readLine().toInt();
+                DHW->image = MyText.readLine();
+                T *  NT = new T(DHW);
+                HList << NT;
+            }
         }
+        MyText.seek(0);
+         if(MyText.readLine().compare("HW") == 0)
+        {
+            while(!MyText.atEnd())
+            {
+                DataHW * DHW = new DataHW();
+                DHW->name = MyText.readLine();
+                DHW->price = MyText.readLine().toInt();
+                DHW->creator = MyText.readLine();
+                DHW->year = MyText.readLine().toInt();
+                DHW->memory = MyText.readLine().toInt();
+                DHW->canal_type = MyText.readLine();
+                DHW->image = MyText.readLine();
+                T *  NT = new T(DHW);
+                HList << NT;
+            }
+        }
+        MyText.seek(0);
+        if(MyText.readLine().compare("SW") == 0)
+       {
+           while(!MyText.atEnd())
+           {
+               DataHW * DHW = new DataHW();
+
+               DHW->name = MyText.readLine();
+               DHW->price = MyText.readLine().toInt();
+               DHW->creator = MyText.readLine();
+               DHW->year = MyText.readLine().toInt();
+               DHW->bufcpum = MyText.readLine();
+               DHW->bufvcm = MyText.readLine();
+               DHW->memory= MyText.readLine().toInt();
+               DHW->bufcpub = MyText.readLine();
+               DHW->bufvcb = MyText.readLine();
+               DHW->maxmem= MyText.readLine().toInt();
+               DHW->image = MyText.readLine();
+               T *  NT = new T(DHW);
+               HList << NT;
+           }
+       }
+
+       MyText.seek(0);
+        MyText.flush();
+        FileM.flush();
+        FileM.close();
+
     }
     void print(QListWidget* QLW)
     {
+        QLW->clear();
         foreach( T * item, HList ) {
             QListWidgetItem* listItem = new QListWidgetItem( item->GetName() );
 
@@ -253,30 +348,110 @@ public:
     }
     void ShowInf(int i,QTextBrowser* QTB,QLabel * QL)
     {
-        HList[i]->Show(QTB,QL);
+        if( i < HList.size() && i >= 0)
+        {
+            HList[i]->Show(QTB,QL);
+        }
+        else
+        {
+            return;
+        }
     }
+    T* getEl(int i)
+    {
+        return HList[i];
+    }
+    int getSize()
+    {
+        return HList.size();
+    }
+    void DeleteIn(int i)
+    {
+        HList.removeAt(i);
+    }
+    void Clear()
+    {
+        HList.clear();
+    }
+
+
 };
 
-
-
-//Клас комп'ютер
-class cComputer
+struct ResOfCheck
 {
-private:
-    cCPU CPU;
-    int grade;
-    int price;
+    int res;
 };
-
 
 //Класс програмне забезпечення
 
 class cSoftware
 {
 private:
+    QString name;
     QString type;
-    cComputer best;
-    cComputer minimum;
+    QString creator;
+    QString image;
+    int price;
+    int year;
+    cNeed  best;
+    cNeed  minimum;
+public:
+
+    cSoftware();
+    cSoftware(DataHW*);
+    int GetPrise();
+    QString GetName();
+    cNeed* getBest();
+    cNeed* getMin();
+    void Show(QTextBrowser*,QLabel*);
+    bool Verification(cHardList<cCPU>,cHardList<cVideoCard>);
 
 };
+
+//Клас комп'ютер
+class cComputer
+{
+private:
+    cCPU *CPU;
+    cOZU *OZU[2];
+    cMotherBoard * MB;
+    cVideoCard * VC;
+    cHardDrive * HD;
+    float grade;
+    int price;
+    int memozu;
+
+public:
+    cComputer();
+    cComputer(DataComp*);
+    float getGrade();
+    bool SetCPU(cCPU*);
+    int SetOZU(cOZU*);
+    bool SetMB(cMotherBoard*);
+    bool SetVC(cVideoCard*);
+    bool SetHW(cHardDrive*);
+    void DelCPU();
+    void DelOZU(int);
+    bool DelMB();
+    void DelVC();
+    void DelHW();
+    void Show(QTextBrowser*);
+    void Show(QLabel*[5]);
+    int GetPrice();
+    int GetMemOzu();
+    bool IsFull();
+    cCPU* GetCpu();
+    cMotherBoard* GetMB();
+    cVideoCard* GetVC();
+    cHardDrive *GetHW();
+    cOZU* GetOZU(int);
+    int CheckSoftware(cSoftware*);
+
+};
+
+
+
+
+
+
 #endif // CHARDWARE_H
