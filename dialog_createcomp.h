@@ -3,6 +3,19 @@
 
 #include <QDialog>
 
+#include "chardware.h"
+#include <QLabel>
+#include <QPixmap>
+struct infForCreate
+{
+    int frequency;
+    int memozu;
+    int mem;
+    int VMem;
+    int price;
+
+};
+
 namespace Ui {
 class Dialog_CreateComp;
 }
@@ -15,8 +28,27 @@ public:
     explicit Dialog_CreateComp(QWidget *parent = 0);
     ~Dialog_CreateComp();
 
+private slots:
+
+
+    void on_checkPrice_clicked(bool checked);
+
+    void on_checkPI_clicked(bool checked);
+
+    void on_buttonBox_accepted();
+
+    void PrCSW(cHardList<cSoftware>);
+
+    void on_PICmb_activated(int index);
+
+
 private:
     Ui::Dialog_CreateComp *ui;
+    cHardList<cSoftware> ListSW;
+    infForCreate inffc;
+signals:
+    void TransInf(infForCreate);
+
 };
 
 #endif // DIALOG_CREATECOMP_H

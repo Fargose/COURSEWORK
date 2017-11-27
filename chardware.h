@@ -15,6 +15,7 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QtAlgorithms>
+
 using namespace std;
 
 int PowTwo(int);
@@ -87,9 +88,11 @@ private:
 public:
     cCPU();
     cCPU(DataHW*);
+    int getFrequency();
     float getGrade();
     void Show(QTextBrowser*,QLabel*);
     QString GetSoket();
+    void PrintTF(QTextStream&);
 
 
 };
@@ -106,6 +109,7 @@ public:
     float getGrade();
     void Show(QTextBrowser*,QLabel*);
     int GetMemory();
+        void PrintTF(QTextStream&);
 
 
 };
@@ -126,6 +130,7 @@ public:
     void Show(QTextBrowser*,QLabel*);
     int GetCardPr();
     QString GetSoket();
+        void PrintTF(QTextStream&);
 
 
 
@@ -147,9 +152,11 @@ private:
 public:
     cVideoCard();
     cVideoCard(DataHW*);
+    int GetMem();
     float getGrade();
     void Show(QTextBrowser*,QLabel*);
     int GetCardPr();
+        void PrintTF(QTextStream&);
 
 
 
@@ -163,8 +170,10 @@ private:
 public:
     cHardDrive();
     cHardDrive(DataHW*);
+    int GetMem();
     float getGrade();
     void Show(QTextBrowser*,QLabel*);
+    void PrintTF(QTextStream&);
 
 
 };
@@ -208,6 +217,7 @@ public:
             return;
         }
         QTextStream MyText(&FileM);
+
         if(MyText.readLine().compare("CPU") == 0)
         {
             while(!MyText.atEnd())
@@ -373,7 +383,43 @@ MyText.seek(0);
     {
         HList.clear();
     }
+    void Add(T* t)
+    {
+        HList << t;
+    }
+    void PrintTF(QString QS,int n)
+    {
 
+
+            QFile FileM(QS);
+            if(!FileM.open(QFile::WriteOnly | QFile::Text))
+            {
+                QMessageBox::information(0, "Information", "Не знайдено файл");
+                return;
+            }
+            QTextStream MyText(&FileM);
+            switch(n)
+            {
+            case 0:MyText << "MB";break;
+            case 1:MyText << "CPU";break;
+            case 2:MyText << "OZU";break;
+            case 3:MyText << "VC";break;
+            case 4:MyText << "HW";break;
+            case 5:MyText << "SW";break;
+            }
+            for(int i = 0;i < HList.size();i++)
+            {
+                MyText << endl;
+                HList[i]->PrintTF(MyText);
+            }
+
+
+            MyText.seek(0);
+             MyText.flush();
+             FileM.flush();
+             FileM.close();
+
+    }
 
 };
 
@@ -401,10 +447,13 @@ public:
     cSoftware(DataHW*);
     int GetPrise();
     QString GetName();
+    QString GetImage();
     cNeed* getBest();
     cNeed* getMin();
     void Show(QTextBrowser*,QLabel*);
     bool Verification(cHardList<cCPU>,cHardList<cVideoCard>);
+    void PrintTF(QTextStream&);
+
 
 };
 
@@ -428,6 +477,7 @@ public:
     bool SetCPU(cCPU*);
     int SetOZU(cOZU*);
     bool SetMB(cMotherBoard*);
+    bool SetMB(cMotherBoard*,int);
     bool SetVC(cVideoCard*);
     bool SetHW(cHardDrive*);
     void DelCPU();
@@ -446,6 +496,7 @@ public:
     cHardDrive *GetHW();
     cOZU* GetOZU(int);
     int CheckSoftware(cSoftware*);
+
 
 };
 

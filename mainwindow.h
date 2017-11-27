@@ -5,6 +5,10 @@
 #include "my_label.h"
 #include "chardware.h"
 #include "dialog_createcomp.h"
+#include <QFileDialog>
+#include "newhard.h"
+
+
 
 namespace Ui {
 class MainWindow;
@@ -57,11 +61,21 @@ private slots:
 
     void OpenCrComSl();
 
+    void ClearInf();
+
 
 
 
 
     void on_RefreshButton_clicked();
+
+    void CreateZbComp(infForCreate);
+
+    void NewHardOpen();
+
+    void NewHard(DataHW,int);
+
+    void on_DelBut_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -69,10 +83,16 @@ private:
     cHardList<cMotherBoard>  ListMB;
     cHardList<cOZU>  ListOZU;
     cHardList<cVideoCard>  ListVC;
-    cHardList<cHardDrive> ListHW;
+    cHardList<cHardDrive> ListHD;
     cHardList<cSoftware> ListSW;
     cComputer * CurrentComp;
     QLabel * lbl[6];
+
+signals:
+
+    void SWList(cHardList<cSoftware>);
+
+    void Lists(cHardList<cCPU>,cHardList<cVideoCard>);
 
 
 

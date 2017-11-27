@@ -19,7 +19,7 @@
      <rect>
       <x>10</x>
       <y>40</y>
-      <width>161</width>
+      <width>131</width>
       <height>22</height>
      </rect>
     </property>
@@ -57,7 +57,7 @@
    <widget class="QTextBrowser" name="TextInfo">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>310</x>
       <y>70</y>
       <width>211</width>
       <height>231</height>
@@ -81,7 +81,7 @@
    <widget class="QLabel" name="ImageLabel">
     <property name="geometry">
      <rect>
-      <x>520</x>
+      <x>530</x>
       <y>70</y>
       <width>400</width>
       <height>300</height>
@@ -335,7 +335,7 @@
    <widget class="QPushButton" name="RefreshButton">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>150</x>
       <y>40</y>
       <width>75</width>
       <height>23</height>
@@ -415,6 +415,19 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="DelBut">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>40</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Видалити</string>
     </property>
    </widget>
   </widget>
