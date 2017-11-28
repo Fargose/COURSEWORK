@@ -4,7 +4,31 @@ ASUS H1100M-K
 ASUS
 2015
 1151
+0
 2
-DDR4
 32
-D:/Kursova/FerumChecker/Images/ASUSH110MK.jpg
+3
+16
+Images/ASUSH110MK.jpg
+ASUS H61M-K
+50
+ASUS
+2013
+1155
+0
+2
+32
+3
+16
+Images/ASUSH61MK.jpg
+ASUS A68HM-K
+50
+ASUS
+2013
+FM2+
+0
+2
+32
+3
+16
+Images/ASUSA68.jpg

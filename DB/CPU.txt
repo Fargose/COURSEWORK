@@ -1,6 +1,6 @@
 CPU
 Intel Core i7 7700K
-500
+370
 Intel
 2015
 1151
@@ -8,7 +8,7 @@ Intel
 20
 4200
 4
-Images/Intel7700K.png
+Images/IntelI77700K.png
 AMD A8-7670K
 250
 AMD
@@ -18,4 +18,54 @@ Radeon R7
 40
 3600
 4
-D:/Kursova/FerumChecker/Images/AMD7670K.jpg
+Images/AMD7670K.jpg
+Intel Core i5-2500K
+150
+Intel
+2011
+1155
+Intel HD Graphics 3000
+6
+3300
+4
+Images/IntelI52500K.jpg
+Intel Core i7-3770
+230
+Intel
+2012
+1155
+Intel HD Graphics 4000
+8
+4200
+4
+Images/IntelI73770.jpg
+Intel Core 2 Duo
+75
+Intel
+2007
+1155
+Intel HD Graphics 3000
+8
+2000
+2
+D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/intelduo.jpg
+Intel Core i7-4790
+1151
+Intel
+2014
+1151
+Intel HD Graphics 4000
+8
+3600
+4
+D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/inteli74790.jpg
+Intel Core i5-2300
+180
+Intel
+2013
+1155
+Intel HD Graphics 3000
+6
+2800
+4
+D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/inteli52300.jpg

@@ -6,4 +6,20 @@ Kingston
 2133
 DDR4
 8
-D:/Kursova/FerumChecker/Images/HYPERXFURY.jpg
+Images/HYPERXFURY.jpg
+Kingston 4096
+50
+Kingston
+2012
+1600
+DDR3
+4
+Images/KIN4096.jpg
+Goodram SODIMM
+25
+Goodram
+2009
+1600
+DDR3
+2
+Images/GRSOD2.jpg

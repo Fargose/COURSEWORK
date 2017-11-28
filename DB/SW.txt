@@ -1,0 +1,15 @@
+SW
+Toshiba P300
+45
+Toshiba
+2013
+1024
+HDD
+Images/ToshibaP300.jpg
+Western Digital Blue
+35
+WD
+2012
+512
+HDD
+Images/WDBlue512.jpg
