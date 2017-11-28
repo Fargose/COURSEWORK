@@ -15,6 +15,7 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QtAlgorithms>
+#include <QPushButton>
 
 using namespace std;
 
@@ -68,7 +69,6 @@ protected:
 public:
 
     cHardware();
-    virtual float getGrade() = 0;
     virtual void Show(QTextBrowser*,QLabel*) = 0;
     QString GetName();
     int GetPrice();
@@ -89,7 +89,9 @@ public:
     cCPU();
     cCPU(DataHW*);
     int getFrequency();
-    float getGrade();
+     void setData(DataHW*);
+     DataHW* GetData();
+
     void Show(QTextBrowser*,QLabel*);
     QString GetSoket();
     void PrintTF(QTextStream&);
@@ -106,10 +108,12 @@ private:
 public:
     cOZU();
     cOZU(DataHW*);
-    float getGrade();
+    void setData(DataHW*);
+
+    DataHW* GetData();
     void Show(QTextBrowser*,QLabel*);
     int GetMemory();
-        void PrintTF(QTextStream&);
+       void PrintTF(QTextStream&);
 
 
 };
@@ -126,7 +130,9 @@ private:
 public:
     cMotherBoard();
     cMotherBoard(DataHW*);
-    float getGrade();
+     void setData(DataHW*);
+
+    DataHW *GetData();
     void Show(QTextBrowser*,QLabel*);
     int GetCardPr();
     QString GetSoket();
@@ -153,10 +159,12 @@ public:
     cVideoCard();
     cVideoCard(DataHW*);
     int GetMem();
-    float getGrade();
+
+    DataHW* GetData();
     void Show(QTextBrowser*,QLabel*);
     int GetCardPr();
         void PrintTF(QTextStream&);
+         void setData(DataHW*);
 
 
 
@@ -171,9 +179,11 @@ public:
     cHardDrive();
     cHardDrive(DataHW*);
     int GetMem();
-    float getGrade();
+
+    DataHW* GetData();
     void Show(QTextBrowser*,QLabel*);
     void PrintTF(QTextStream&);
+     void setData(DataHW*);
 
 
 };
@@ -449,10 +459,12 @@ public:
     QString GetName();
     QString GetImage();
     cNeed* getBest();
+    DataHW* GetData();
     cNeed* getMin();
     void Show(QTextBrowser*,QLabel*);
     bool Verification(cHardList<cCPU>,cHardList<cVideoCard>);
     void PrintTF(QTextStream&);
+     void setData(DataHW*);
 
 
 };
@@ -473,7 +485,8 @@ private:
 public:
     cComputer();
     cComputer(DataComp*);
-    float getGrade();
+    cComputer operator = (cComputer);
+
     bool SetCPU(cCPU*);
     int SetOZU(cOZU*);
     bool SetMB(cMotherBoard*);
@@ -500,7 +513,19 @@ public:
 
 };
 
+class cQueueComp
+{
+private:
+    int iterator;
+    QList<cComputer> list;
+public:
+    cQueueComp();
+    cQueueComp(cComputer);
+    void Add(cComputer);
+    cComputer *GoBack(QPushButton*);
+    cComputer *GoForward(QPushButton*);
 
+};
 
 
 

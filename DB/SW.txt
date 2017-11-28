@@ -1,15 +1,12 @@
 SW
-Toshiba P300
-45
-Toshiba
-2013
-1024
-HDD
-Images/ToshibaP300.jpg
-Western Digital Blue
+The Witcher 3: Wild Hunt
 35
-WD
-2012
-512
-HDD
-Images/WDBlue512.jpg
+CD Project Red
+2015
+Intel Core i7-3770
+GeForce GTX 770
+8
+Intel Core i5-2500K
+GeForce GTX 660
+6
+D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/WITCHER3.jpg

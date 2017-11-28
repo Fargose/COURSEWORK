@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ListMB.print(ui->listWidget);
     ListOZU.read("DB/OZU.txt");
     ListVC.read("DB/VC.txt");
-    ListHD.read("DB/HW.txt");
+    ListHD.read("DB/HD.txt");
     ListSW.read("DB/SW.txt");
     for(int i = 0;i < ListSW.getSize();i++)
     {
@@ -58,8 +58,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->HWImage->setToolTip("Відсутнє");
     ui->listWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     CurrentComp->Show(ui->CompInformation);
-    ui->CompMenu->addAction("&Підібрати компютер",this,SLOT(OpenCrComSl()));
+    ui->CompMenu->addAction("&Підібрати комп'ютер",this,SLOT(OpenCrComSl()));
     ui->CompMenu->addAction("&Додати елемент",this,SLOT(NewHardOpen()));
+    ClearInf();
+    ListComp = new cQueueComp(*CurrentComp);
+    ui->pushButton_3->setEnabled(false);
+    ui->pushButton_4->setEnabled(false);
 
 
 
@@ -146,30 +150,45 @@ void MainWindow::on_pushButton_clicked()
     {
         if(ui->comboBox->currentIndex() == 1)
         {
+
             if(CurrentComp->SetCPU(ListCPU.getEl(ui->listWidget->currentRow())) == true)
             {
 
                 CurrentComp->Show(lbl);
                 ui->CpuImage->setToolTip(ListCPU.getEl(ui->listWidget->currentRow())->GetName());
+                 ListComp->Add(*CurrentComp);
+                 ui->pushButton_4->setEnabled(false);
+                 ui->pushButton_3->setEnabled(true);
+
 
             }
         }
         else if(ui->comboBox->currentIndex() == 0)
         {
-            CurrentComp->SetMB(ListMB.getEl(ui->listWidget->currentRow()));
 
+            CurrentComp->SetMB(ListMB.getEl(ui->listWidget->currentRow()));
+            ListComp->Add(*CurrentComp);
+             ui->pushButton_4->setEnabled(false);
+            ui->pushButton_3->setEnabled(true);
             CurrentComp->Show(lbl);
             ui->MBImage->setToolTip(ListMB.getEl(ui->listWidget->currentRow())->GetName());
 
         }
         else if(ui->comboBox->currentIndex() == 2)
+
         {
+
             int bb = CurrentComp->SetOZU(ListOZU.getEl(ui->listWidget->currentRow()));
             if(bb == 0)
             {
+                 ListComp->Add(*CurrentComp);
+                 ui->pushButton_4->setEnabled(false);
+                 ui->pushButton_3->setEnabled(true);
+
 
                 ui->ozuimage2->setToolTip(ui->OzuImage->toolTip());
                 ui->OzuImage->setToolTip(ListOZU.getEl(ui->listWidget->currentRow())->GetName());
+
 
             }
             else if(bb == 1)
@@ -177,6 +196,10 @@ void MainWindow::on_pushButton_clicked()
 
 
                 ui->OzuImage->setToolTip(ListOZU.getEl(ui->listWidget->currentRow())->GetName());
+                 ListComp->Add(*CurrentComp);
+                 ui->pushButton_4->setEnabled(false);
+                 ui->pushButton_3->setEnabled(true);
+
             }
             CurrentComp->Show(lbl);
 
@@ -187,23 +210,37 @@ void MainWindow::on_pushButton_clicked()
             if(CurrentComp->SetVC(ListVC.getEl(ui->listWidget->currentRow())) == true)
             {
 
-                CurrentComp->Show(lbl);
+
                 ui->VcImage->setToolTip(ListVC.getEl(ui->listWidget->currentRow())->GetName());
+                 ListComp->Add(*CurrentComp);
+                   CurrentComp->Show(lbl);
+                 ui->pushButton_4->setEnabled(false);
+                 ui->pushButton_3->setEnabled(true);
+
 
             }
         }
         else if(ui->comboBox->currentIndex() == 4)
         {
+
+
             if(CurrentComp->SetHW(ListHD.getEl(ui->listWidget->currentRow())) == true)
             {
 
                 CurrentComp->Show(lbl);
+                 ListComp->Add(*CurrentComp);
+                 ui->pushButton_4->setEnabled(false);
+                 ui->pushButton_3->setEnabled(true);
+
                 ui->HWImage->setToolTip(ListHD.getEl(ui->listWidget->currentRow())->GetName());
+
 
             }
         }
         else if(ui->comboBox->currentIndex() == 5)
         {
+
+            ui->groupBox->show();
             int _rs = CurrentComp->CheckSoftware(ListSW.getEl(ui->listWidget->currentRow()));
             if(_rs != -1)
             {
@@ -265,64 +302,95 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_MBClicked()
 {
+
     if(CurrentComp->DelMB() == true)
     {
+         ListComp->Add(*CurrentComp);
         ui->MBImage->setToolTip("Відсутнє");
         ui->ozuimage2->setToolTip("Відсутнє");
         ui->CpuImage->setToolTip("Відсутнє");
         ui->OzuImage->setToolTip("Відсутнє");
         ui->VcImage->setToolTip("Відсутнє");
         ui->HWImage->setToolTip("Відсутнє");
+                ui->pushButton_4->setEnabled(false);
+                ui->pushButton_3->setEnabled(true);
+
     }
     CurrentComp->Show(lbl);
 
     CurrentComp->Show(ui->CompInformation);
 
+
 }
 
 void MainWindow::on_CPU_Clicked()
 {
+
     CurrentComp->DelCPU();
     CurrentComp->Show(lbl);
     ui->CpuImage->setToolTip("Відсутнє");
 
     CurrentComp->Show(ui->CompInformation);
+     ListComp->Add(*CurrentComp);
+     ui->pushButton_4->setEnabled(false);
+     ui->pushButton_3->setEnabled(true);
+
 }
 
 void MainWindow::on_VC_Clicked()
 {
+
     CurrentComp->DelVC();
     CurrentComp->Show(lbl);
     ui->VcImage->setToolTip("Відсутнє");
 
     CurrentComp->Show(ui->CompInformation);
+     ListComp->Add(*CurrentComp);
+     ui->pushButton_4->setEnabled(false);
+     ui->pushButton_3->setEnabled(true);
+
 }
 
 void MainWindow::on_OZU1_clicked()
 {
+
     CurrentComp->DelOZU(0);
     ui->OzuImage->setToolTip("Відсутнє");
     CurrentComp->Show(lbl);
 
     CurrentComp->Show(ui->CompInformation);
+     ListComp->Add(*CurrentComp);
+     ui->pushButton_4->setEnabled(false);
+     ui->pushButton_3->setEnabled(true);
+
 }
 
 void MainWindow::on_OZU2_clicked()
 {
+
     CurrentComp->DelOZU(1);
     CurrentComp->Show(lbl);
     ui->ozuimage2->setToolTip("Відсутнє");
+     ListComp->Add(*CurrentComp);
 
     CurrentComp->Show(ui->CompInformation);
+    ui->pushButton_4->setEnabled(false);
+    ui->pushButton_3->setEnabled(true);
+
 }
 
 void MainWindow::on_HW_clicked()
 {
+
     CurrentComp->DelHW();
     CurrentComp->Show(lbl);
     ui->HWImage->setToolTip("Відсутнє");
 
     CurrentComp->Show(ui->CompInformation);
+     ListComp->Add(*CurrentComp);
+     ui->pushButton_4->setEnabled(false);
+     ui->pushButton_3->setEnabled(true);
+
 
 }
 
@@ -336,6 +404,8 @@ void MainWindow::on_MBCh()
 
     }
     ui->pushButton->setEnabled(false);
+    ui->DelBut->setEnabled(false);
+    ui->pushButton_2->setEnabled(false);
 
 }
 
@@ -349,6 +419,8 @@ void MainWindow::on_CPUCh()
 
     }
     ui->pushButton->setEnabled(false);
+    ui->DelBut->setEnabled(false);
+    ui->pushButton_2->setEnabled(false);
 
 }
 
@@ -362,6 +434,8 @@ void MainWindow::on_VCCh()
 
     }
     ui->pushButton->setEnabled(false);
+    ui->DelBut->setEnabled(false);
+    ui->pushButton_2->setEnabled(false);
 
 }
 
@@ -375,6 +449,8 @@ void MainWindow::on_OZU1Ch()
 
     }
     ui->pushButton->setEnabled(false);
+    ui->DelBut->setEnabled(false);
+    ui->pushButton_2->setEnabled(false);
 
 }
 void MainWindow::on_OZU2Ch()
@@ -387,6 +463,8 @@ void MainWindow::on_OZU2Ch()
 
     }
     ui->pushButton->setEnabled(false);
+    ui->DelBut->setEnabled(false);
+    ui->pushButton_2->setEnabled(false);
 
 }
 
@@ -401,12 +479,16 @@ void MainWindow::on_HWCh()
 
     }
     ui->pushButton->setEnabled(false);
+    ui->DelBut->setEnabled(false);
+    ui->pushButton_2->setEnabled(false);
 
 }
 
 void MainWindow::on_listWidget_pressed(const QModelIndex &index)
 {
     ui->pushButton->setEnabled(true);
+    ui->DelBut->setEnabled(true);
+    ui->pushButton_2->setEnabled(true);
     ui->ImageLabel->clear();
     ui->TextInfo->clear();
     if(ui->comboBox->currentIndex() == 1)
@@ -436,6 +518,7 @@ void MainWindow::on_listWidget_pressed(const QModelIndex &index)
         ui->BestLabel->setText("Рекомендовані вимоги");
         ui->CheckResLabl->setText("Cумісність: ");
         ui->SettingsLabel->setText("Рекомендовані налаштування: ");
+        ui->groupBox->show();
     }
 }
 
@@ -457,12 +540,8 @@ void MainWindow::ClearInf()
     ui->MinLabel->setStyleSheet("color:black");
     ui->SettingsLabelNumber->setStyleSheet("color:black");
     ui->CheckResNum->setStyleSheet("color:black");
-    ui->MinLabel->setText("");
-    ui->BestLabel->setText("");
-    ui->CheckResLabl->setText("");
-    ui->SettingsLabel->setText("");
-    ui->SettingsLabelNumber->setText("");
-    ui->CheckResNum->setText("");
+
+    ui->groupBox->hide();
 }
 
 
@@ -471,6 +550,11 @@ void MainWindow::ClearInf()
 
 void MainWindow::on_RefreshButton_clicked()
 {
+    ui->pushButton->setEnabled(false);
+    ui->DelBut->setEnabled(false);
+    ui->pushButton_2->setEnabled(false);
+    ui->pushButton_3->setEnabled(false);
+    ui->pushButton_4->setEnabled(false);
     ListCPU.Clear();
     ListMB.Clear();
     ListOZU.Clear();
@@ -482,7 +566,7 @@ void MainWindow::on_RefreshButton_clicked()
     ListMB.print(ui->listWidget);
     ListOZU.read("DB/OZU.txt");
     ListVC.read("DB/VC.txt");
-    ListHD.read("DB/HW.txt");
+    ListHD.read("DB/HD.txt");
     ListSW.read("DB/SW.txt");
 
     for(int i = 0;i < ListSW.getSize();i++)
@@ -559,6 +643,11 @@ void MainWindow::CreateZbComp(infForCreate ifc)
         ui->OzuImage->setToolTip(CurrentComp->GetOZU(0)->GetName());
         ui->VcImage->setToolTip(CurrentComp->GetVC()->GetName());
         ui->HWImage->setToolTip(CurrentComp->GetHW()->GetName());
+        ListComp->Add(*CurrentComp);
+        ui->pushButton_4->setEnabled(false);
+        ui->pushButton_3->setEnabled(true);
+
+
         return;
     }
     else
@@ -602,16 +691,21 @@ void MainWindow::CreateZbComp(infForCreate ifc)
                             }
                             if(BufComp->IsFull() && BufComp->GetPrice() <=ifc.price)
                             {
+
                                 CurrentComp = BufComp;
                                 CurrentComp->Show(lbl);
 
                                 CurrentComp->Show(ui->CompInformation);
                                 ui->MBImage->setToolTip(CurrentComp->GetMB()->GetName());
-
                                 ui->CpuImage->setToolTip(CurrentComp->GetCpu()->GetName());
                                 ui->OzuImage->setToolTip(CurrentComp->GetOZU(0)->GetName());
                                 ui->VcImage->setToolTip(CurrentComp->GetVC()->GetName());
                                 ui->HWImage->setToolTip(CurrentComp->GetHW()->GetName());
+                                ListComp->Add(*CurrentComp);
+                                ui->pushButton_4->setEnabled(false);
+                                ui->pushButton_3->setEnabled(true);
+
+
                                 return;
                             }
                         }
@@ -628,11 +722,11 @@ void MainWindow::NewHardOpen()
 {
     newhard * HL = new newhard() ;
 
-
+connect(this,SIGNAL(Lists(cHardList<cCPU>,cHardList<cVideoCard>)),HL,SLOT(PrCSW(cHardList<cCPU>,cHardList<cVideoCard>)));
     connect(HL,SIGNAL(TransInf(DataHW,int)),this,SLOT(NewHard(DataHW,int)));
 
-    connect(this,SIGNAL(Lists(cHardList<cCPU>,cHardList<cVideoCard>)),HL,SLOT(PrCSW(cHardList<cCPU>,cHardList<cVideoCard>)));
-       emit Lists(ListCPU,ListVC);
+
+    emit Lists(ListCPU,ListVC);
     HL->exec();
 }
 
@@ -643,6 +737,7 @@ void MainWindow::NewHard(DataHW HW, int i)
     {
         cCPU* buf = new cCPU(&HW);
         ListCPU.Add(buf);
+        ui->pushButton_4->setEnabled(false);
         ListCPU.PrintTF("DB/CPU.txt",i);
         ListCPU.print(ui->listWidget);
         ui->comboBox->setCurrentIndex(i);
@@ -651,6 +746,7 @@ void MainWindow::NewHard(DataHW HW, int i)
     {
         cMotherBoard* buf = new cMotherBoard(&HW);
         ListMB.Add(buf);
+        ui->pushButton_4->setEnabled(false);
         ListMB.PrintTF("DB/MBB.txt",i);
         ListMB.print(ui->listWidget);
         ui->comboBox->setCurrentIndex(i);
@@ -659,6 +755,7 @@ void MainWindow::NewHard(DataHW HW, int i)
     {
         cVideoCard* buf = new cVideoCard(&HW);
         ListVC.Add(buf);
+        ui->pushButton_4->setEnabled(false);
         ListVC.PrintTF("DB/VC.txt",i);
         ListVC.print(ui->listWidget);
         ui->comboBox->setCurrentIndex(i);
@@ -667,6 +764,7 @@ void MainWindow::NewHard(DataHW HW, int i)
     {
         cOZU* buf = new cOZU(&HW);
         ListOZU.Add(buf);
+        ui->pushButton_4->setEnabled(false);
         ListOZU.PrintTF("DB/OZU.txt",i);
         ListOZU.print(ui->listWidget);
         ui->comboBox->setCurrentIndex(i);
@@ -675,7 +773,8 @@ void MainWindow::NewHard(DataHW HW, int i)
     {
         cHardDrive* buf = new cHardDrive(&HW);
         ListHD.Add(buf);
-        ListHD.PrintTF("DB/HW.txt",i);
+        ui->pushButton_4->setEnabled(false);
+        ListHD.PrintTF("DB/HD.txt",i);
         ListHD.print(ui->listWidget);
         ui->comboBox->setCurrentIndex(i);
     }
@@ -683,6 +782,7 @@ void MainWindow::NewHard(DataHW HW, int i)
     {
         cSoftware* buf = new cSoftware(&HW);
         ListSW.Add(buf);
+        ui->pushButton_4->setEnabled(false);
         for(int i = 0;i < ListSW.getSize();i++)
         {
             if(!ListSW.getEl(i)->Verification(ListCPU,ListVC))
@@ -735,15 +835,159 @@ void MainWindow::on_DelBut_clicked()
         if(j == 4)
         {
             ListHD.DeleteIn(i);
-            ListHD.PrintTF("DB/HW.txt",j);
+            ListHD.PrintTF("DB/HD.txt",j);
             ListHD.print(ui->listWidget);
         }
         if(j == 5)
         {
             ListSW.DeleteIn(i);
             ListSW.print(ui->listWidget);
-            ListHD.PrintTF("DB/SW.txt",j);
+            ListSW.PrintTF("DB/SW.txt",j);
         }
         ClearInf();
     }
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    hardedit * HE = new hardedit();
+    DataHW* HW;
+    if(ui->listWidget->currentRow() >= 0)
+    {
+    if(ui->comboBox->currentIndex() == 0)
+    {
+        HW = ListMB.getEl(ui->listWidget->currentRow())->GetData();
+    }
+    else if(ui->comboBox->currentIndex() == 1)
+    {
+        HW = ListCPU.getEl(ui->listWidget->currentRow())->GetData();
+    }
+    else if(ui->comboBox->currentIndex() == 2)
+    {
+        HW = ListOZU.getEl(ui->listWidget->currentRow())->GetData();
+    }
+    else if(ui->comboBox->currentIndex() == 3)
+    {
+        HW = ListVC.getEl(ui->listWidget->currentRow())->GetData();
+    }
+    else if(ui->comboBox->currentIndex() == 4)
+    {
+        HW = ListHD.getEl(ui->listWidget->currentRow())->GetData();
+    }
+    else if(ui->comboBox->currentIndex() == 5)
+    {
+        HW = ListSW.getEl(ui->listWidget->currentRow())->GetData();
+    }
+    connect(this,SIGNAL(ChangeLair(int,DataHW*)),HE,SLOT(ChangeLair(int,DataHW*)));
+    connect(HE,SIGNAL(TransHW(DataHW*)),this,SLOT(HWEdit(DataHW*)));
+    connect(this,SIGNAL(Lists(cHardList<cCPU>,cHardList<cVideoCard>)),HE,SLOT(PrCSW(cHardList<cCPU>,cHardList<cVideoCard>)));
+     emit Lists(ListCPU,ListVC);
+    emit ChangeLair(ui->comboBox->currentIndex(),HW);
+
+    HE->exec();
+    }
+
+
+}
+
+void MainWindow::HWEdit(DataHW * _d)
+{
+    if(ui->listWidget->currentRow() >= 0)
+    {
+        int i = ui->listWidget->currentRow();
+        if(ui->comboBox->currentIndex() == 0)
+        {
+            ListMB.getEl(ui->listWidget->currentRow())->setData(_d);
+            ListMB.ShowInf(ui->listWidget->currentRow(),ui->TextInfo,ui->ImageLabel);
+            ListMB.print(ui->listWidget);
+            ListMB.PrintTF("DB/MBB.txt",0);
+
+
+        }
+        else if(ui->comboBox->currentIndex() == 1)
+        {
+            ListCPU.getEl(ui->listWidget->currentRow())->setData(_d);
+            ListCPU.ShowInf(ui->listWidget->currentRow(),ui->TextInfo,ui->ImageLabel);
+            ListCPU.print(ui->listWidget);
+            ListCPU.PrintTF("DB/CPU.txt",1);
+
+        }
+        else if(ui->comboBox->currentIndex() == 2)
+        {
+            ListOZU.getEl(ui->listWidget->currentRow())->setData(_d);
+            ListOZU.ShowInf(ui->listWidget->currentRow(),ui->TextInfo,ui->ImageLabel);
+            ListOZU.print(ui->listWidget);
+            ListOZU.PrintTF("DB/OZU.txt",2);
+
+        }
+        else if(ui->comboBox->currentIndex() == 3)
+        {
+            ListVC.getEl(ui->listWidget->currentRow())->setData(_d);
+            ListVC.ShowInf(ui->listWidget->currentRow(),ui->TextInfo,ui->ImageLabel);
+            ListVC.print(ui->listWidget);
+            ListVC.PrintTF("DB/VC.txt",3);
+
+        }
+        else if(ui->comboBox->currentIndex() == 4)
+        {
+            ListHD.getEl(ui->listWidget->currentRow())->setData(_d);
+            ListHD.ShowInf(ui->listWidget->currentRow(),ui->TextInfo,ui->ImageLabel);
+            ListHD.print(ui->listWidget);
+            ListHD.PrintTF("DB/HD.txt",4);
+
+        }
+        else if(ui->comboBox->currentIndex() == 5)
+        {
+            ListSW.getEl(ui->listWidget->currentRow())->setData(_d);
+            for(int j = 0;j < ListSW.getSize();j++)
+            {
+                if(!ListSW.getEl(j)->Verification(ListCPU,ListVC))
+                {
+                    ListSW.DeleteIn(j);
+                    j--;
+                }
+            }
+            ListSW.ShowInf(ui->listWidget->currentRow(),ui->TextInfo,ui->ImageLabel);
+            ListSW.print(ui->listWidget);
+            ListSW.PrintTF("DB/SW.txt",5);
+
+        }
+        ui->listWidget->setCurrentRow(i);
+    }
+
+
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    cComputer * buf = new cComputer();
+    buf =  ListComp->GoBack(ui->pushButton_3);
+    if ( buf != NULL)
+    {
+        *CurrentComp = *buf;
+        CurrentComp->Show(lbl);
+
+        CurrentComp->Show(ui->CompInformation);
+        ui->pushButton_4->setEnabled(true);
+
+    }
+
+
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    cComputer * buf = new cComputer();
+    buf =  ListComp->GoForward(ui->pushButton_4);
+    if (buf  != NULL)
+    {
+       *CurrentComp = *buf;
+        CurrentComp->Show(lbl);
+
+        CurrentComp->Show(ui->CompInformation);
+        ui->pushButton_3->setEnabled(true);
+
+    }
+
+
 }

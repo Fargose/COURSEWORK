@@ -51,10 +51,40 @@ int cCPU::getFrequency()
     return (int)frequency;
 }
 
-float cCPU::getGrade()
+void cCPU::setData(DataHW *_d)
 {
-    return 5;
+    name = _d->name;
+    price = _d->price;
+    frequency = _d->frequency;
+    creator = _d->creator;
+    year = _d->year;
+    cernel = _d->cernel;
+    soket = _d->soket;
+    Cash = _d->Cash;
+    GChip = _d->GChip;
+    image = _d->image;
+
 }
+
+DataHW *cCPU::GetData()
+{
+   DataHW * HW = new DataHW;
+   HW->name = name;
+   HW->price = price;
+   HW->creator = creator;
+   HW->year = year;
+   HW->image = image;
+   HW->soket = soket;
+   HW->cernel = cernel;
+
+   HW->Cash = Cash;
+
+   HW->GChip = GChip;
+   HW->frequency = frequency;
+   return HW;
+
+}
+
 
 
 
@@ -77,7 +107,7 @@ void cCPU::Show(QTextBrowser * QTB, QLabel * QL)
         MyPix.load(image);
     }
     QL->setScaledContents(true);
-    QL->setGeometry(520,QL->y(),400,300);
+    QL->setGeometry(580,QL->y(),400,300);
     QL->setPixmap(MyPix);
 
 }
@@ -123,9 +153,40 @@ cMotherBoard::cMotherBoard(DataHW * _d)
 
 }
 
-float cMotherBoard::getGrade()
+void cMotherBoard::setData(DataHW * _d)
 {
-    return 5;
+    name = _d->name;
+    price = _d->price;
+    creator = _d->creator;
+    year = _d->year;
+    soket = _d->soket;
+    maxmem = _d->maxmem;
+    canal_count = _d->canal_count;
+    canal_type = _d->canal_type;
+    image = _d->image;
+    pcxv = _d->pcxv;
+    pcxx  = _d->pcxx;
+}
+
+
+
+DataHW *cMotherBoard::GetData()
+{
+    DataHW * HW = new DataHW;
+    HW->name = name;
+    HW->price = price;
+    HW->creator = creator;
+    HW->year = year;
+    HW->image = image;
+    HW->soket = soket;
+    HW->maxmem = maxmem;
+
+    HW->canal_type = canal_type;
+    HW->canal_count = canal_count;
+    HW->pcxv = pcxv;
+    HW->pcxx  = pcxx;
+
+    return HW;
 
 }
 
@@ -148,7 +209,7 @@ void cMotherBoard::Show(QTextBrowser * QTB, QLabel * QL)
         MyPix.load(image);
     }
     QL->setScaledContents(true);
-    QL->setGeometry(520,QL->y(),400,300);
+    QL->setGeometry(580,QL->y(),400,300);
     QL->setPixmap(MyPix);
 }
 
@@ -171,11 +232,12 @@ void cMotherBoard::PrintTF(QTextStream &QTS)
     QTS << creator << endl;
     QTS << year << endl;
     QTS << soket << endl;
-    QTS << canal_type << endl;
     QTS << canal_count << endl;
+    QTS << canal_type << endl;
+
     QTS << maxmem << endl;
     QTS << pcxv << endl;
-        QTS << pcxx << endl;
+    QTS << pcxx << endl;
     QTS << image;
 }
 
@@ -200,9 +262,35 @@ cOZU::cOZU(DataHW * _d)
 
 }
 
-float cOZU::getGrade()
+void cOZU::setData(DataHW * _d)
 {
-    return 5;
+    name = _d->name;
+    price = _d->price;
+    creator = _d->creator;
+    year = _d->year;
+    memory = _d->memory;
+    frequency= _d->frequency;
+    canal_type = _d->canal_type;
+    image = _d->image;
+}
+
+
+DataHW *cOZU::GetData()
+{
+    DataHW * HW = new DataHW;
+    HW->name = name;
+    HW->price = price;
+    HW->creator = creator;
+    HW->year = year;
+    HW->image = image;
+    HW->memory = memory;
+
+
+    HW->canal_type = canal_type;
+
+
+    HW->frequency = frequency;
+    return HW;
 }
 
 void cOZU::Show(QTextBrowser * QTB, QLabel * QL)
@@ -222,7 +310,7 @@ void cOZU::Show(QTextBrowser * QTB, QLabel * QL)
         MyPix.load(image);
     }
     QL->setScaledContents(true);
-    QL->setGeometry(520,QL->y(),400,300);
+    QL->setGeometry(580,QL->y(),400,300);
     QL->setPixmap(MyPix);
 }
 
@@ -275,9 +363,26 @@ int cVideoCard::GetMem()
 
 
 
-float cVideoCard::getGrade()
+
+
+DataHW *cVideoCard::GetData()
 {
-    return 5;
+    DataHW * HW = new DataHW;
+    HW->name = name;
+    HW->price = price;
+    HW->creator = creator;
+    HW->year = year;
+    HW->image = image;
+    HW->DirectX = DirectX;
+    HW->OpenGl = OpenGl;
+    HW->memory= memory;
+
+    HW->Cfrequency = Cfrequency;
+    HW->Mfrequency= Mfrequency;
+    HW->pcxv = pcxv;
+    HW->pcxx  = pcxx;
+
+    return HW;
 }
 
 void cVideoCard::Show(QTextBrowser * QTB, QLabel * QL)
@@ -300,7 +405,7 @@ void cVideoCard::Show(QTextBrowser * QTB, QLabel * QL)
         MyPix.load(image);
     }
     QL->setScaledContents(true);
-    QL->setGeometry(520,QL->y(),400,300);
+    QL->setGeometry(580,QL->y(),400,300);
     QL->setPixmap(MyPix);
 }
 
@@ -333,6 +438,22 @@ void cVideoCard::PrintTF(QTextStream &QTS)
 
 }
 
+void cVideoCard::setData(DataHW * _d)
+{
+    name = _d->name;
+    price = _d->price;
+    creator = _d->creator;
+    year = _d->year;
+    memory = _d->memory;
+    Cfrequency= _d->Cfrequency;
+    Mfrequency = _d->Mfrequency;
+    DirectX = _d->DirectX;
+    OpenGl = _d->OpenGl;
+    image = _d->image;
+    pcxv = _d->pcxv;
+    pcxx = _d->pcxx;
+}
+
 
 
 cComputer::cComputer()
@@ -359,6 +480,18 @@ cComputer::cComputer(DataComp * _d)
     VC = _d->VC;
     HD = _d->HW;
 
+}
+
+cComputer cComputer::operator =(cComputer _C)
+{
+    CPU = _C.GetCpu();
+    VC = _C.GetVC();
+    OZU[0] = _C.GetOZU(0);
+    OZU[1] = _C.GetOZU(1);
+    MB = _C.GetMB();
+    HD = _C.GetHW();
+    price = _C.GetPrice();
+    memozu = _C.GetMemOzu();
 }
 
 bool cComputer::SetCPU(cCPU * _CPU)
@@ -865,27 +998,27 @@ int cComputer::CheckSoftware(cSoftware *_SW)
     }
     if(_best->CPU->GetName() == CPU->GetName() || _best->CPU->GetYear() <= CPU->GetYear())
     {
-        res+=35/(1 +counter/2);
+        res+=30/(1 +counter/2);
     }
     if(_best->VC->GetName() == VC->GetName() || _best->VC->GetYear() <= VC->GetYear())
     {
-        res+=40/(1 +counter/2);
+        res+=60/(1 +counter/2);
     }
     if(_best->memory <= memozu)
     {
-        res+=25/(1 + counter/2);
+        res+=10/(1 + counter/2);
     }
     if(_best->CPU->GetYear()  > CPU->GetYear() && _min->CPU->GetYear() <= CPU->GetYear())
     {
-        res+=35/(1 +counter/2 + (_best->CPU->GetYear()  - CPU->GetYear()));
+        res+=30/(1 +counter/2 + (_best->CPU->GetYear()  - CPU->GetYear()));
     }
     if(_best->VC->GetYear()  > VC->GetYear() && _min->VC->GetYear() <= VC->GetYear())
     {
-        res+=35/(1 +counter/2 + (_best->VC->GetYear()  - VC->GetYear()));
+        res+=60/(1 +counter/2 + (_best->VC->GetYear()  - VC->GetYear()));
     }
     if(_best->memory > memozu && memozu >= _min->memory)
     {
-        res+=35/(1 +counter/2 + (_best->memory - memozu));
+        res+=10/(1 +counter/2 + (_best->memory - memozu));
     }
     return (int)res;
 
@@ -918,9 +1051,18 @@ int cHardDrive::GetMem()
     return memory;
 }
 
-float cHardDrive::getGrade()
+
+
+DataHW *cHardDrive::GetData()
 {
-    return 5;
+    DataHW * HW = new DataHW;
+    HW->name = name;
+    HW->price = price;
+    HW->creator = creator;
+    HW->year = year;
+    HW->image = image;
+    HW->canal_type = canal_type;
+    HW->memory = memory;
 }
 
 void cHardDrive::Show(QTextBrowser * QTB, QLabel *QL)
@@ -939,7 +1081,7 @@ void cHardDrive::Show(QTextBrowser * QTB, QLabel *QL)
         MyPix.load(image);
     }
     QL->setScaledContents(true);
-    QL->setGeometry(520,QL->y(),400,300);
+    QL->setGeometry(580,QL->y(),400,300);
     QL->setPixmap(MyPix);
 }
 
@@ -958,6 +1100,17 @@ void cHardDrive::PrintTF(QTextStream  &QTS)
     QTS << image;
 }
 
+void cHardDrive::setData(DataHW * _d)
+{
+    name = _d->name;
+    price = _d->price;
+    year = _d->year;
+    creator = _d->creator;
+    memory = _d->memory;
+    image =_d->image;
+    canal_type = _d->canal_type;
+}
+
 cSoftware::cSoftware()
 {
 
@@ -968,7 +1121,7 @@ cSoftware::cSoftware()
 cSoftware::cSoftware(DataHW * _d)
 {
     name = _d->name;
-    type = _d->type;
+
     year = _d->year;
     creator = _d->creator;
     best.CPUbuf = _d->bufcpub;
@@ -996,6 +1149,24 @@ cNeed *cSoftware::getBest()
     return &best;
 }
 
+DataHW *cSoftware::GetData()
+{
+    DataHW * HW = new DataHW;
+    HW->name = name;
+    HW->price = price;
+    HW->creator = creator;
+    HW->year = year;
+    HW->image = image;
+    HW->bufcpub = best.CPUbuf;
+    HW->memory = minimum.memory;
+    HW->maxmem = best.memory;
+    HW->bufvcb = best.VCBuf;
+    HW->bufvcm = minimum.VCBuf;
+    HW->bufcpum = minimum.CPUbuf;
+    return HW;
+
+}
+
 cNeed *cSoftware::getMin()
 {
     return &minimum;
@@ -1009,12 +1180,12 @@ void cSoftware::Show(QTextBrowser * QTB, QLabel *QL)
     QTB->append("Розробник: " + creator);
     QTB->append("Рік виробництва: " + QString::number(year));
     QTB->append("Мінімальні вимоги: ");
-    QTB->append("Процесор: " + minimum.CPUbuf);
-    QTB->append("Відеокарта: " + minimum.VCBuf);
+    QTB->append("Процесор: " + minimum.CPU->GetName());
+    QTB->append("Відеокарта: " + minimum.VC->GetName());
     QTB->append("ОЗУ: " + QString::number(minimum.memory) + " Gb");
     QTB->append("Рекомендовані вимоги: ");
-    QTB->append("Процесор: " + best.CPUbuf);
-    QTB->append("Відеокарта: " + best.VCBuf);
+    QTB->append("Процесор: " + best.CPU->GetName());
+    QTB->append("Відеокарта: " + best.VC->GetName());
     QTB->append("ОЗУ: " + QString::number(best.memory) + " Gb");
     QPixmap MyPix;
     if(!MyPix.load(image))
@@ -1051,7 +1222,7 @@ bool cSoftware::Verification(cHardList<cCPU> cpuList, cHardList<cVideoCard> vLis
         }
         if((best.CPUbuf != cpuList.getEl(i)->GetName()) && (i == cpuList.getSize()-1))
         {
-            QMessageBox::information(0,"Помилка веріфікації","В каталозі немає забезпечення за назвою " + best.CPUbuf + ". Програмне забезпечення вилучено.");
+            QMessageBox::information(0,"Помилка веріфікації","В каталозі немає забезпечення за назвою " + best.CPUbuf + ". Програмне забезпечення вилучено: " + name);
             return false;
         }
     }
@@ -1064,7 +1235,7 @@ bool cSoftware::Verification(cHardList<cCPU> cpuList, cHardList<cVideoCard> vLis
         }
         if(best.VCBuf != vList.getEl(i)->GetName() && i == vList.getSize()-1)
         {
-            QMessageBox::information(0,"Помилка веріфікації","В каталозі немає забезпечення за назвою " + best.VCBuf + ". Програмне забезпечення вилучено.");
+            QMessageBox::information(0,"Помилка веріфікації","В каталозі немає забезпечення за назвою " + best.VCBuf + ". Програмне забезпечення вилучено:" + name);
             return false;
         }
     }
@@ -1077,7 +1248,7 @@ bool cSoftware::Verification(cHardList<cCPU> cpuList, cHardList<cVideoCard> vLis
         }
         if(minimum.VCBuf != vList.getEl(i)->GetName() && i == vList.getSize()-1)
         {
-            QMessageBox::information(0,"Помилка веріфікації","В каталозі немає забезпечення за назвою " + minimum.VCBuf + ". Програмне забезпечення вилучено.");
+            QMessageBox::information(0,"Помилка веріфікації","В каталозі немає забезпечення за назвою " + minimum.VCBuf + ". Програмне забезпечення вилучено:" + name);
             return false;
         }
     }
@@ -1090,15 +1261,15 @@ void cSoftware::PrintTF(QTextStream & QTS)
     QTS << price << endl;
     QTS << creator << endl;
     QTS << year << endl;
-
-    QTS << best.CPUbuf << endl;
-    QTS << best.VCBuf<< endl;
-
-    QTS << best.memory << endl;
     QTS << minimum.CPUbuf << endl;
     QTS << minimum.VCBuf << endl;
 
     QTS << minimum.memory << endl;
+    QTS << best.CPUbuf << endl;
+    QTS << best.VCBuf<< endl;
+
+    QTS << best.memory << endl;
+
 
 
 
@@ -1107,7 +1278,92 @@ void cSoftware::PrintTF(QTextStream & QTS)
     QTS << image;
 }
 
+void cSoftware::setData(DataHW * _d)
+{
+    name = _d->name;
+    type = _d->type;
+    year = _d->year;
+    creator = _d->creator;
+    best.CPUbuf = _d->bufcpub;
+    best.memory = _d->maxmem;
+    best.VCBuf = _d->bufvcb;
+    minimum.CPUbuf = _d->bufcpum;
+    minimum.VCBuf = _d->bufvcm;
+    minimum.memory = _d->memory;
+    price = _d->price;
+    image = _d->image;
+}
 
 
 
 
+
+
+cQueueComp::cQueueComp()
+{
+
+}
+
+cQueueComp::cQueueComp(cComputer Cmp)
+{
+     iterator = 0;
+     list.push_back(Cmp);
+}
+
+void cQueueComp::Add(cComputer  Cmp)
+{
+    if(list.size() > 10)
+    {
+        list.insert(iterator+1,Cmp);
+        iterator++;
+        list.pop_front();
+//        for(int i = iterator + 1;i<list.size();i++)
+//        {
+//            list.removeAt(i);
+//        }
+
+
+    }
+    else
+    {
+        list.insert(iterator+1,Cmp);
+        iterator++;
+//        for(int i = iterator + 1;i<list.size();i++)
+//        {
+//            list.removeAt(i);
+//        }
+    }
+}
+
+cComputer * cQueueComp::GoBack(QPushButton*QTB)
+{
+    if((iterator - 2) < 0)
+    {
+        QTB->setEnabled(false);
+    }
+    if(iterator - 1 >= 0)
+    {
+
+        cComputer *C = new cComputer;
+        C = &list[--iterator];
+        return C;
+
+    }
+    else return NULL;
+}
+
+cComputer* cQueueComp::GoForward(QPushButton*QTB)
+{
+    if(iterator + 2 >= list.size())
+    {
+        QTB->setEnabled(false);
+    }
+    if(iterator + 1 < list.size())
+    {
+        cComputer* C = new cComputer;
+        C = &list[++iterator];
+        return C;
+    }
+
+    else return NULL;
+}

@@ -29,16 +29,19 @@ SOURCES += \
     chardware.cpp \
     my_label.cpp \
     dialog_createcomp.cpp \
-    newhard.cpp
+    newhard.cpp \
+    hardedit.cpp
 
 HEADERS += \
         mainwindow.h \
     chardware.h \
     my_label.h \
     dialog_createcomp.h \
-    newhard.h
+    newhard.h \
+    hardedit.h
 
 FORMS += \
         mainwindow.ui \
     dialog_createcomp.ui \
-    newhard.ui
+    newhard.ui \
+    hardedit.ui

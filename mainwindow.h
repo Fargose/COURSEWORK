@@ -7,6 +7,7 @@
 #include "dialog_createcomp.h"
 #include <QFileDialog>
 #include "newhard.h"
+#include "hardedit.h"
 
 
 
@@ -77,6 +78,14 @@ private slots:
 
     void on_DelBut_clicked();
 
+    void on_pushButton_2_clicked();
+
+    void HWEdit(DataHW*);
+
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_4_clicked();
+
 private:
     Ui::MainWindow *ui;
     cHardList<cCPU>  ListCPU;
@@ -87,12 +96,17 @@ private:
     cHardList<cSoftware> ListSW;
     cComputer * CurrentComp;
     QLabel * lbl[6];
+    cQueueComp* ListComp;
 
 signals:
 
     void SWList(cHardList<cSoftware>);
 
     void Lists(cHardList<cCPU>,cHardList<cVideoCard>);
+
+    void ChangeLair(int,DataHW*);
+
+
 
 
 

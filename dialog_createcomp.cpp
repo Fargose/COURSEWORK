@@ -7,7 +7,7 @@ Dialog_CreateComp::Dialog_CreateComp(QWidget *parent) :
     ui(new Ui::Dialog_CreateComp)
 {
     ui->setupUi(this);
-    this->setWindowTitle("Підібрати компютер");
+    this->setWindowTitle("Підібрати комп'ютер");
 
 }
 

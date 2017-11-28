@@ -4,19 +4,19 @@ ASUS H1100M-K
 ASUS
 2015
 1151
-0
 2
-32
+DDR4
+16
 3
 16
-Images/ASUSH110MK.jpg
+D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/ASUSH110MK.jpg
 ASUS H61M-K
 50
 ASUS
 2013
 1155
-0
 2
+DDR4
 32
 3
 16
@@ -26,8 +26,8 @@ ASUS A68HM-K
 ASUS
 2013
 FM2+
-0
 2
+DDR4
 32
 3
 16

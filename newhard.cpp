@@ -44,6 +44,7 @@ newhard::newhard(QWidget *parent) :
     ui->cash->setValidator(new QRegExpValidator(QRegExp("^([1-9][0-9]*|0)(\\.|,)[0-9]{2}"), this));
     ui->price->setValidator(new QRegExpValidator(QRegExp("^([1-9][0-9]*|0)(\\.|,)[0-9]{2}"), this));
     ui->CFreq->setValidator(new QRegExpValidator(QRegExp("^([1-9][0-9]*|0)(\\.|,)[0-9]{2}"), this));
+    this->setWindowTitle("Додати елемент.");
 }
 
 newhard::~newhard()
@@ -79,7 +80,7 @@ void newhard::on_buttonBox_accepted()
     if(ui->radioButton->isChecked() == true)
     {
 
-        HW.frequency =  ui->freq->text().toFloat();
+        HW.frequency =  ui->freq->currentText().toFloat();
         HW.soket = ui->soket->currentText();
         HW.Cash = ui->cash->text().toInt();
         HW.cernel = ui->cernel->currentText().toInt();
@@ -119,7 +120,7 @@ void newhard::on_buttonBox_accepted()
 
         HW.canal_type=  ui->canal_type->currentText();
         HW.memory = ui->memory->currentText().toInt();
-        HW.frequency= ui->freq->text().toInt();
+        HW.frequency= ui->freq->currentText().toInt();
 
 
         emit TransInf(HW,2);
