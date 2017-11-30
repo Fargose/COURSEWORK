@@ -8,6 +8,9 @@ Dialog_CreateComp::Dialog_CreateComp(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("Підібрати комп'ютер");
+        ui->lineEdit->setValidator(new QRegExpValidator(QRegExp("^([1-9][0-9]*|0)(\\.|,)[0-9]{2}"), this));
+
+
 
 }
 
@@ -66,6 +69,14 @@ void Dialog_CreateComp::on_checkPI_clicked(bool checked)
         ui->OZUCmb->setEnabled(false);
         ui->HDCmb->setEnabled(false);
         ui->VMemCB->setEnabled(false);
+        QPixmap MyPix;
+        if(!MyPix.load(ListSW.getEl(ui->PICmb->currentIndex())->GetImage()))
+        {
+
+            MyPix.load("Images/NoPhoto.jpg");
+        }
+        ui->label_6->setScaledContents(true);
+        ui->label_6->setPixmap(MyPix);
     }
     if(!checked)
     {
@@ -103,7 +114,7 @@ void Dialog_CreateComp::on_buttonBox_accepted()
     emit TransInf(inffc);
 }
 
-void Dialog_CreateComp::PrCSW(cHardList<cSoftware> _list)
+void Dialog_CreateComp::PrCSW(cWareList<cSoftware> _list)
 {
     ListSW = _list;
     for(int i = 0;i<ListSW.getSize();i++)
@@ -122,4 +133,5 @@ void Dialog_CreateComp::on_PICmb_activated(int index)
     }
     ui->label_6->setScaledContents(true);
     ui->label_6->setPixmap(MyPix);
+
 }

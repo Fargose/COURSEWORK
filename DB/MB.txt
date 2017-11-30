@@ -1,0 +1,34 @@
+MB
+ASUS H1100M-K
+60
+ASUS
+2015
+1151
+2
+DDR4
+32
+3
+16
+D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/ASUSH110MK.jpg
+ASUS H67HM-K
+100
+ASUS
+2013
+1155
+2
+DDR4
+32
+3
+16
+Images/ASUSH61MK.jpg
+ASUS A68HM-K
+50
+ASUS
+2013
+FM2+
+2
+DDR4
+32
+3
+16
+Images/ASUSA68.jpg

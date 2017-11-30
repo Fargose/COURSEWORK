@@ -56,20 +56,22 @@ struct DataHW
 
 
 
-//Базовий клас для апаратного забезпечення
-class cHardware
+//Базовий клас для апаратного та програмного забезпечення
+class cWare
 {
 protected:
     int price;
     int year;
     QString name;
     QString creator;
-    int grade;
     QString image;
 public:
 
-    cHardware();
+    cWare();
     virtual void Show(QTextBrowser*,QLabel*) = 0;
+    virtual void setData(DataHW*) = 0;
+    virtual DataHW *GetData() =0;
+    virtual void PrintTF(QTextStream&) = 0;
     QString GetName();
     int GetPrice();
     QString GetImage();
@@ -77,7 +79,7 @@ public:
 };
 
 //Клас процесора
-class cCPU:public cHardware
+class cCPU:public cWare
 {
 private:
     float frequency;
@@ -89,17 +91,19 @@ public:
     cCPU();
     cCPU(DataHW*);
     int getFrequency();
-     void setData(DataHW*);
-     DataHW* GetData();
-
+    void setData(DataHW*);
+    DataHW* GetData();
     void Show(QTextBrowser*,QLabel*);
     QString GetSoket();
     void PrintTF(QTextStream&);
+    int GetCernel();
+
 
 
 };
 
-class cOZU: public cHardware
+//Клас ОЗУ
+class cOZU: public cWare
 {
 private:
     QString canal_type;
@@ -109,16 +113,16 @@ public:
     cOZU();
     cOZU(DataHW*);
     void setData(DataHW*);
-
     DataHW* GetData();
     void Show(QTextBrowser*,QLabel*);
     int GetMemory();
-       void PrintTF(QTextStream&);
+    void PrintTF(QTextStream&);
 
 
 };
 
-class cMotherBoard:public cHardware
+//Клас материнської плати
+class cMotherBoard:public cWare
 {
 private:
     QString soket;
@@ -130,13 +134,13 @@ private:
 public:
     cMotherBoard();
     cMotherBoard(DataHW*);
-     void setData(DataHW*);
+    void setData(DataHW*);
 
     DataHW *GetData();
     void Show(QTextBrowser*,QLabel*);
     int GetCardPr();
     QString GetSoket();
-        void PrintTF(QTextStream&);
+    void PrintTF(QTextStream&);
 
 
 
@@ -145,7 +149,7 @@ public:
 
 
 //Клас відеокарти
-class cVideoCard:public cHardware
+class cVideoCard:public cWare
 {
 private:
     int DirectX;
@@ -163,14 +167,15 @@ public:
     DataHW* GetData();
     void Show(QTextBrowser*,QLabel*);
     int GetCardPr();
-        void PrintTF(QTextStream&);
-         void setData(DataHW*);
+    void PrintTF(QTextStream&);
+    void setData(DataHW*);
 
 
 
 };
 
-class cHardDrive:public cHardware
+//Клас жорсткого диску
+class cHardDrive:public cWare
 {
 private:
     int memory;
@@ -183,20 +188,13 @@ public:
     DataHW* GetData();
     void Show(QTextBrowser*,QLabel*);
     void PrintTF(QTextStream&);
-     void setData(DataHW*);
+    void setData(DataHW*);
 
 
 };
 
-struct DataComp
-{
-   cCPU * CPU;
-   cOZU * OZU[2];
-   cMotherBoard * MB;
-   cVideoCard * VC;
-   cHardDrive * HW;
 
-};
+
 
 //Структура системних вимог
 struct cNeed
@@ -210,20 +208,21 @@ public:
 
 
 };
+
 //Список апаратного забезпечення
 template <class T>
-class cHardList
+class cWareList
 {
 private:
     QList<T*> HList;
 public:
-    cHardList(){}
+    cWareList(){}
     void read(QString QS)
     {
         QFile FileM(QS);
         if(!FileM.open(QFile::ReadOnly | QFile::Text))
         {
-            QMessageBox::information(0, "Information", "Не знайдено файл");
+            QMessageBox::information(0, "Information", "Не знайдено файл " + QS);
             return;
         }
         QTextStream MyText(&FileM);
@@ -235,13 +234,22 @@ public:
                 DataHW * DHW = new DataHW();
                 DHW->name = MyText.readLine();
                 DHW->price = MyText.readLine().toInt();
+
                 DHW->creator = MyText.readLine();
                 DHW->year = MyText.readLine().toInt();
+                if(DHW->price <=0 || DHW->year <=0)
+                {   QMessageBox::information(0,"Помилка зчитування CPU.","Файл зчитано не повністю");
+
+                    return; }
                 DHW->soket = MyText.readLine();
                 DHW->GChip = MyText.readLine();
                 DHW->Cash = MyText.readLine().toInt();
                 DHW->frequency = MyText.readLine().toInt();
                 DHW->cernel = MyText.readLine().toInt();
+                if(DHW->frequency <=0 || DHW->Cash <=0 || DHW->cernel <=0)
+                {   QMessageBox::information(0,"Помилка зчитування CPU.","Файл зчитано не повністю");
+
+                    return; }
                 DHW->image = MyText.readLine();
                 T *  NT = new T(DHW);
                 HList << NT;
@@ -249,7 +257,7 @@ public:
 
         }
 
-MyText.seek(0);
+        MyText.seek(0);
         if(MyText.readLine().compare("MB") == 0)
         {
             while(!MyText.atEnd())
@@ -257,8 +265,13 @@ MyText.seek(0);
                 DataHW * DHW = new DataHW();
                 DHW->name = MyText.readLine();
                 DHW->price = MyText.readLine().toInt();
+
                 DHW->creator = MyText.readLine();
                 DHW->year = MyText.readLine().toInt();
+                if(DHW->price <=0 || DHW->year <=0)
+                {   QMessageBox::information(0,"Помилка зчитування MB.","Файл зчитано не повністю");
+
+                    return; }
                 DHW->soket = MyText.readLine();
                 DHW->canal_count = MyText.readLine().toInt();
                 DHW->canal_type = MyText.readLine();
@@ -266,38 +279,56 @@ MyText.seek(0);
                 DHW->pcxv = MyText.readLine().toFloat();
                 DHW->pcxx = MyText.readLine().toInt();
                 DHW->image = MyText.readLine();
+                if(DHW->pcxx <=0 || DHW->pcxv <=0 || DHW->maxmem <=0 || DHW->canal_count <=0)
+                {   QMessageBox::information(0,"Помилка зчитування MB.","Файл зчитано не повністю");
+
+                    return; }
                 T *  NT = new T(DHW);
                 HList << NT;
             }
         }
         MyText.seek(0);
-         if(MyText.readLine().compare("OZU") == 0)
+        if(MyText.readLine().compare("OZU") == 0)
         {
             while(!MyText.atEnd())
             {
                 DataHW * DHW = new DataHW();
                 DHW->name = MyText.readLine();
                 DHW->price = MyText.readLine().toInt();
+
                 DHW->creator = MyText.readLine();
                 DHW->year = MyText.readLine().toInt();
+                if(DHW->price <=0 || DHW->year <=0)
+                {   QMessageBox::information(0,"Помилка зчитування OZU.","Файл зчитано не повністю");
+
+                    return; }
                 DHW->frequency = MyText.readLine().toInt();
                 DHW->canal_type = MyText.readLine();
                 DHW->memory = MyText.readLine().toInt();
                 DHW->image = MyText.readLine();
+                if(DHW->frequency <=0 || DHW->memory <=0)
+                {   QMessageBox::information(0,"Помилка зчитування OZU.","Файл зчитано не повністю");
+
+                    return; }
                 T *  NT = new T(DHW);
                 HList << NT;
             }
         }
         MyText.seek(0);
-          if(MyText.readLine().compare("VC") == 0)
+        if(MyText.readLine().compare("VC") == 0)
         {
             while(!MyText.atEnd())
             {
                 DataHW * DHW = new DataHW();
                 DHW->name = MyText.readLine();
                 DHW->price = MyText.readLine().toInt();
+
                 DHW->creator = MyText.readLine();
                 DHW->year = MyText.readLine().toInt();
+                if(DHW->price <=0 || DHW->year <=0)
+                {   QMessageBox::information(0,"Помилка зчитування VC.","Файл зчитано не повністю");
+
+                    return; }
                 DHW->Cfrequency = MyText.readLine().toInt();
                 DHW->Mfrequency = MyText.readLine().toInt();
                 DHW->memory = MyText.readLine().toInt();
@@ -306,22 +337,35 @@ MyText.seek(0);
                 DHW->pcxv = MyText.readLine().toFloat();
                 DHW->pcxx = MyText.readLine().toInt();
                 DHW->image = MyText.readLine();
+                if(DHW->pcxx <=0 || DHW->pcxv <=0 || DHW->memory <=0 || DHW->OpenGl <=0 || DHW->DirectX <= 0 || DHW->Mfrequency <= 0 || DHW->Cfrequency <=0)
+                {   QMessageBox::information(0,"Помилка зчитування VC.","Файл зчитано не повністю");
+
+                    return; }
                 T *  NT = new T(DHW);
                 HList << NT;
             }
         }
         MyText.seek(0);
-         if(MyText.readLine().compare("HW") == 0)
+        if(MyText.readLine().compare("HW") == 0)
         {
             while(!MyText.atEnd())
             {
                 DataHW * DHW = new DataHW();
                 DHW->name = MyText.readLine();
                 DHW->price = MyText.readLine().toInt();
+
                 DHW->creator = MyText.readLine();
                 DHW->year = MyText.readLine().toInt();
+                if(DHW->price <=0 || DHW->year <=0)
+                {   QMessageBox::information(0,"Помилка зчитування HW.","Файл зчитано не повністю");
+
+                    return; }
                 DHW->memory = MyText.readLine().toInt();
                 DHW->canal_type = MyText.readLine();
+                if(DHW->memory <=0)
+                {   QMessageBox::information(0,"Помилка зчитування HW.","Файл зчитано не повністю");
+
+                    return; }
                 DHW->image = MyText.readLine();
                 T *  NT = new T(DHW);
                 HList << NT;
@@ -329,28 +373,33 @@ MyText.seek(0);
         }
         MyText.seek(0);
         if(MyText.readLine().compare("SW") == 0)
-       {
-           while(!MyText.atEnd())
-           {
-               DataHW * DHW = new DataHW();
+        {
+            while(!MyText.atEnd())
+            {
+                DataHW * DHW = new DataHW();
 
-               DHW->name = MyText.readLine();
-               DHW->price = MyText.readLine().toInt();
-               DHW->creator = MyText.readLine();
-               DHW->year = MyText.readLine().toInt();
-               DHW->bufcpum = MyText.readLine();
-               DHW->bufvcm = MyText.readLine();
-               DHW->memory= MyText.readLine().toInt();
-               DHW->bufcpub = MyText.readLine();
-               DHW->bufvcb = MyText.readLine();
-               DHW->maxmem= MyText.readLine().toInt();
-               DHW->image = MyText.readLine();
-               T *  NT = new T(DHW);
-               HList << NT;
-           }
-       }
+                DHW->name = MyText.readLine();
+                DHW->price = MyText.readLine().toInt();
 
-       MyText.seek(0);
+                DHW->creator = MyText.readLine();
+                DHW->year = MyText.readLine().toInt();
+                if(DHW->price <=0 || DHW->year <=0)
+                {   QMessageBox::information(0,"Помилка зчитування SW.","Файл зчитано не повністю");
+
+                    return; }
+                DHW->bufcpum = MyText.readLine();
+                DHW->bufvcm = MyText.readLine();
+                DHW->memory= MyText.readLine().toInt();
+                DHW->bufcpub = MyText.readLine();
+                DHW->bufvcb = MyText.readLine();
+                DHW->maxmem= MyText.readLine().toInt();
+                DHW->image = MyText.readLine();
+                T *  NT = new T(DHW);
+                HList << NT;
+            }
+        }
+
+        MyText.seek(0);
         MyText.flush();
         FileM.flush();
         FileM.close();
@@ -401,70 +450,59 @@ MyText.seek(0);
     {
 
 
-            QFile FileM(QS);
-            if(!FileM.open(QFile::WriteOnly | QFile::Text))
-            {
-                QMessageBox::information(0, "Information", "Не знайдено файл");
-                return;
-            }
-            QTextStream MyText(&FileM);
-            switch(n)
-            {
-            case 0:MyText << "MB";break;
-            case 1:MyText << "CPU";break;
-            case 2:MyText << "OZU";break;
-            case 3:MyText << "VC";break;
-            case 4:MyText << "HW";break;
-            case 5:MyText << "SW";break;
-            }
-            for(int i = 0;i < HList.size();i++)
-            {
-                MyText << endl;
-                HList[i]->PrintTF(MyText);
-            }
+        QFile FileM(QS);
+        if(!FileM.open(QFile::WriteOnly | QFile::Text))
+        {
+            QMessageBox::information(0, "Information", "Не знайдено файл");
+            return;
+        }
+        QTextStream MyText(&FileM);
+        switch(n)
+        {
+        case 0:MyText << "MB";break;
+        case 1:MyText << "CPU";break;
+        case 2:MyText << "OZU";break;
+        case 3:MyText << "VC";break;
+        case 4:MyText << "HW";break;
+        case 5:MyText << "SW";break;
+        }
+        for(int i = 0;i < HList.size();i++)
+        {
+            MyText << endl;
+            HList[i]->PrintTF(MyText);
+        }
 
 
-            MyText.seek(0);
-             MyText.flush();
-             FileM.flush();
-             FileM.close();
+        MyText.seek(0);
+        MyText.flush();
+        FileM.flush();
+        FileM.close();
 
     }
 
 };
 
-struct ResOfCheck
-{
-    int res;
-};
+
 
 //Класс програмне забезпечення
 
-class cSoftware
+class cSoftware:public cWare
 {
 private:
-    QString name;
-    QString type;
-    QString creator;
-    QString image;
-    int price;
-    int year;
+
     cNeed  best;
     cNeed  minimum;
 public:
 
     cSoftware();
     cSoftware(DataHW*);
-    int GetPrise();
-    QString GetName();
-    QString GetImage();
     cNeed* getBest();
     DataHW* GetData();
     cNeed* getMin();
     void Show(QTextBrowser*,QLabel*);
-    bool Verification(cHardList<cCPU>,cHardList<cVideoCard>);
+    bool Verification(cWareList<cCPU>,cWareList<cVideoCard>);
     void PrintTF(QTextStream&);
-     void setData(DataHW*);
+    void setData(DataHW*);
 
 
 };
@@ -484,7 +522,7 @@ private:
 
 public:
     cComputer();
-    cComputer(DataComp*);
+
     cComputer operator = (cComputer);
 
     bool SetCPU(cCPU*);
@@ -512,6 +550,8 @@ public:
 
 
 };
+
+//Клас черга комп'ютерів
 
 class cQueueComp
 {

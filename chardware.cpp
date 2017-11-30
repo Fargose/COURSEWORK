@@ -2,27 +2,27 @@
 
 using namespace std;
 
-cHardware::cHardware()
+cWare::cWare()
 {
 
 }
 
-QString cHardware::GetName()
+QString cWare::GetName()
 {
     return name;
 }
 
-int cHardware::GetPrice()
+int cWare::GetPrice()
 {
     return price;
 }
 
-QString cHardware::GetImage()
+QString cWare::GetImage()
 {
     return image;
 }
 
-int cHardware::GetYear()
+int cWare::GetYear()
 {
     return year;
 }
@@ -129,6 +129,11 @@ void cCPU::PrintTF(QTextStream  &QTS)
     QTS << frequency << endl;
     QTS << cernel << endl;
     QTS << image;
+}
+
+int cCPU::GetCernel()
+{
+    return cernel;
 }
 
 
@@ -470,17 +475,7 @@ cComputer::cComputer()
 
 }
 
-cComputer::cComputer(DataComp * _d)
-{
-    CPU = _d->CPU;
-    OZU[1] = _d->OZU[1];
-    OZU[0] = _d->OZU[0];
-    memozu = OZU[0]->GetMemory() + OZU[1]->GetMemory();
-    MB = _d->MB;
-    VC = _d->VC;
-    HD = _d->HW;
 
-}
 
 cComputer cComputer::operator =(cComputer _C)
 {
@@ -646,7 +641,7 @@ bool cComputer::SetVC(cVideoCard * _VC)
     {
         if(MB->GetCardPr() < _VC->GetCardPr())
         {
-            QMessageBox::information(0, "Information", "Пропускна властивість материнської слота материнської плати менша за інтерфейс відеокарти. Можлива робота не в повну силу.");
+            QMessageBox::information(0, "Information", "Пропускна властивість слота PCiE материнської плати менша за інтерфейс відеокарти. Можлива робота не в повну силу.");
 
         }
         if(VC!=NULL)
@@ -803,6 +798,7 @@ void cComputer::Show(QLabel * _lab[] )
         }
         _lab[0]->setScaledContents(true);
         _lab[0]->setPixmap(MyPix);
+        _lab[0]->setToolTip(CPU->GetName());
 
     }
     else
@@ -811,6 +807,7 @@ void cComputer::Show(QLabel * _lab[] )
         MyPix.load("");
         _lab[0]->setScaledContents(true);
         _lab[0]->setPixmap(MyPix);
+         _lab[0]->setToolTip("Відсутньо");
     }
     if(MB!=NULL)
     {
@@ -822,6 +819,7 @@ void cComputer::Show(QLabel * _lab[] )
         }
         _lab[1]->setScaledContents(true);
         _lab[1]->setPixmap(MyPix);
+         _lab[1]->setToolTip(MB->GetName());
     }
     else
     {
@@ -829,6 +827,7 @@ void cComputer::Show(QLabel * _lab[] )
         MyPix.load("");
         _lab[1]->setScaledContents(true);
         _lab[1]->setPixmap(MyPix);
+         _lab[1]->setToolTip("Відсутньо");
     }
     if(VC!=NULL)
     {
@@ -840,6 +839,7 @@ void cComputer::Show(QLabel * _lab[] )
         }
         _lab[2]->setScaledContents(true);
         _lab[2]->setPixmap(MyPix);
+         _lab[2]->setToolTip(VC->GetName());
     }
     else
     {
@@ -847,6 +847,7 @@ void cComputer::Show(QLabel * _lab[] )
         MyPix.load("");
         _lab[2]->setScaledContents(true);
         _lab[2]->setPixmap(MyPix);
+        _lab[2]->setToolTip("Відсутньо");
     }
     if(OZU[0]!=NULL)
     {
@@ -858,6 +859,7 @@ void cComputer::Show(QLabel * _lab[] )
         }
         _lab[3]->setScaledContents(true);
         _lab[3]->setPixmap(MyPix);
+        _lab[3]->setToolTip(OZU[0]->GetName());
     }
     else
     {
@@ -865,6 +867,7 @@ void cComputer::Show(QLabel * _lab[] )
         MyPix.load("");
         _lab[3]->setScaledContents(true);
         _lab[3]->setPixmap(MyPix);
+        _lab[3]->setToolTip("Відсутньо");
     }
     if(OZU[1]!=NULL)
     {
@@ -876,6 +879,8 @@ void cComputer::Show(QLabel * _lab[] )
         }
         _lab[4]->setScaledContents(true);
         _lab[4]->setPixmap(MyPix);
+
+        _lab[4]->setToolTip(OZU[1]->GetName());
     }
     else
     {
@@ -883,6 +888,8 @@ void cComputer::Show(QLabel * _lab[] )
         MyPix.load("");
         _lab[4]->setScaledContents(true);
         _lab[4]->setPixmap(MyPix);
+
+        _lab[4]->setToolTip("Відсутньо");
     }
     if(HD !=NULL)
     {
@@ -894,6 +901,7 @@ void cComputer::Show(QLabel * _lab[] )
         }
         _lab[5]->setScaledContents(true);
         _lab[5]->setPixmap(MyPix);
+             _lab[5]->setToolTip(HD->GetName());
     }
     else
     {
@@ -901,6 +909,7 @@ void cComputer::Show(QLabel * _lab[] )
         MyPix.load("");
         _lab[5]->setScaledContents(true);
         _lab[5]->setPixmap(MyPix);
+        _lab[5]->setToolTip("Відсутньо");
     }
 }
 
@@ -970,13 +979,13 @@ int cComputer::CheckSoftware(cSoftware *_SW)
 
     double counter = 0;
     double res = 0;
-    if(_min->CPU->GetYear() > CPU->GetYear())
+    if(_min->CPU->getFrequency() > CPU->getFrequency() || _min->CPU->GetCernel() > CPU->GetCernel())
     {
 
         ResStr+="Процесор (" +CPU->GetName() + ") слабший за мінімально потрібний (" + _min->CPU->GetName() + ")\n";
         counter++;
     }
-    if(_min->VC->GetYear() > VC->GetYear())
+    if(_min->VC->GetMem() > VC->GetMem())
     {
 
         ResStr+="Відеокарта (" +VC->GetName() + ") слабша за мінімально потрібну (" + _min->VC->GetName() + ")\n";
@@ -996,29 +1005,41 @@ int cComputer::CheckSoftware(cSoftware *_SW)
     {
         return 0;
     }
-    if(_best->CPU->GetName() == CPU->GetName() || _best->CPU->GetYear() <= CPU->GetYear())
+    if(_best->CPU->GetName() == CPU->GetName() || _best->CPU->getFrequency() <= CPU->getFrequency())
     {
-        res+=30/(1 +counter/2);
+        res+=20/abs(1 +counter*0.2);
     }
-    if(_best->VC->GetName() == VC->GetName() || _best->VC->GetYear() <= VC->GetYear())
+    if(_best->CPU->GetName() == CPU->GetName() || _best->CPU->GetCernel() <= CPU->GetCernel())
     {
-        res+=60/(1 +counter/2);
+        res+=15/abs(1 +counter*0.2);
+    }
+    if(_best->VC->GetName() == VC->GetName() || _best->VC->GetMem() <= VC->GetMem())
+    {
+        res+=45/abs(1 +counter*0.3);
     }
     if(_best->memory <= memozu)
     {
-        res+=10/(1 + counter/2);
+        res+=20/abs(1 +counter*0.3);
     }
-    if(_best->CPU->GetYear()  > CPU->GetYear() && _min->CPU->GetYear() <= CPU->GetYear())
+    if(_best->CPU->getFrequency()  > CPU->getFrequency() && _min->CPU->getFrequency() <= CPU->getFrequency())
     {
-        res+=30/(1 +counter/2 + (_best->CPU->GetYear()  - CPU->GetYear()));
+        res+=20/abs(1 + counter*0.1 +  _best->CPU->getFrequency()  - CPU->getFrequency()/2);
     }
-    if(_best->VC->GetYear()  > VC->GetYear() && _min->VC->GetYear() <= VC->GetYear())
+    if(_best->CPU->GetCernel()  > CPU->GetCernel() && _min->CPU->GetCernel() <= CPU->GetCernel())
     {
-        res+=60/(1 +counter/2 + (_best->VC->GetYear()  - VC->GetYear()));
+        res+=15/abs(1 + counter*0.1  + _best->CPU->GetCernel()  - CPU->GetCernel());
+    }
+    if(_best->VC->GetMem()  > VC->GetMem() && _min->VC->GetMem() <= VC->GetMem())
+    {
+        res+=45/abs(1+ counter*0.1  + _best->VC->GetMem() - VC->GetMem());
+    }
+    if(MB->GetCardPr() < VC->GetCardPr())
+    {
+    res+= - (abs(VC->GetCardPr() - MB->GetCardPr()))/50;
     }
     if(_best->memory > memozu && memozu >= _min->memory)
     {
-        res+=10/(1 +counter/2 + (_best->memory - memozu));
+        res+=20/abs(1 +counter*0.1 + (_best->memory - memozu));
     }
     return (int)res;
 
@@ -1134,15 +1155,6 @@ cSoftware::cSoftware(DataHW * _d)
     image = _d->image;
 }
 
-QString cSoftware::GetName()
-{
-    return name;
-}
-
-QString cSoftware::GetImage()
-{
-    return image;
-}
 
 cNeed *cSoftware::getBest()
 {
@@ -1198,7 +1210,7 @@ void cSoftware::Show(QTextBrowser * QTB, QLabel *QL)
     QL->setPixmap(MyPix);
 }
 
-bool cSoftware::Verification(cHardList<cCPU> cpuList, cHardList<cVideoCard> vList)
+bool cSoftware::Verification(cWareList<cCPU> cpuList, cWareList<cVideoCard> vList)
 {
     for(int i = 0;i<cpuList.getSize();i++)
     {
@@ -1281,7 +1293,6 @@ void cSoftware::PrintTF(QTextStream & QTS)
 void cSoftware::setData(DataHW * _d)
 {
     name = _d->name;
-    type = _d->type;
     year = _d->year;
     creator = _d->creator;
     best.CPUbuf = _d->bufcpub;

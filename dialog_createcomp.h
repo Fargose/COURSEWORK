@@ -37,14 +37,14 @@ private slots:
 
     void on_buttonBox_accepted();
 
-    void PrCSW(cHardList<cSoftware>);
+    void PrCSW(cWareList<cSoftware>);
 
     void on_PICmb_activated(int index);
 
 
 private:
     Ui::Dialog_CreateComp *ui;
-    cHardList<cSoftware> ListSW;
+    cWareList<cSoftware> ListSW;
     infForCreate inffc;
 signals:
     void TransInf(infForCreate);

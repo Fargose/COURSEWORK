@@ -24,7 +24,7 @@ hardedit::~hardedit()
 
 }
 
-void hardedit::PrCSW(cHardList<cCPU> chc, cHardList<cVideoCard> cvc)
+void hardedit::PrCSW(cWareList<cCPU> chc, cWareList<cVideoCard> cvc)
 {
     ListCpu = chc;
     ListVC = cvc;
@@ -123,18 +123,29 @@ void hardedit::ChangeLair(int i,DataHW * _d)
 
 void hardedit::on_buttonBox_accepted()
 {
+
     HW.name = ui->name->text();
-    if(HW.name =="")
+    if(HW.name == "")
     {
-        HW.name = "No name";
+        QMessageBox::information(0,"Помилка заповнення.","Заповніть всі поля.");
+      return;
+    }
+    if(HW.image == ""){
+        HW.image = "Images/NoPhoto.jpg";
     }
     HW.creator = ui->creator->text();
     if(HW.creator == "")
     {
-        HW.creator = "Невідомо";
+        QMessageBox::information(0,"Помилка заповнення.","Заповніть всі поля.");
+        return;
     }
     HW.year = ui->year->currentText().toInt();
     HW.price = ui->price->text().toInt();
+    if(HW.price == 0)
+    {
+        QMessageBox::information(0,"Помилка заповнення.","Заповніть всі поля.");
+        return;
+    }
     if(ui->stackedWidget->currentIndex() == 0)
     {
         HW.canal_type = ui->canl_type_m->currentText();
@@ -149,12 +160,22 @@ void hardedit::on_buttonBox_accepted()
         HW.soket = ui->soketp->currentText();
         HW.cernel = ui->cernel->currentText().toInt();
         HW.Cash = ui->cash->text().toInt();
+        if(HW.Cash == 0)
+        {
+             QMessageBox::information(0,"Помилка заповнення.","Заповніть всі поля.");
+            return;
+        }
         HW.GChip = ui->GChip->currentText();
         HW.frequency = ui->frequencyp->currentText().toInt();
     }
     else if(ui->stackedWidget->currentIndex() == 2)
      {
          HW.frequency = ui->frequencyozu->text().toInt();
+         if(HW.frequency == 0)
+         {
+              QMessageBox::information(0,"Помилка заповнення.","Заповніть всі поля.");
+             return;
+         }
          HW.memory = ui->memozu->currentText().toInt();
          HW.canal_type = ui->canltypeozu->currentText();
      }
@@ -167,6 +188,11 @@ void hardedit::on_buttonBox_accepted()
         HW.DirectX = ui->DirectX->currentText().toInt();
         HW.OpenGl = ui->OpenGL->currentText().toFloat();
         HW.Mfrequency = ui->MFrequency->text().toInt();
+        if(HW.Cfrequency == 0 || HW.Mfrequency == 0)
+        {
+            QMessageBox::information(0,"Помилка заповнення.","Заповніть всі поля.");
+            return;
+        }
 
     }
     else if(ui->stackedWidget->currentIndex() == 4)

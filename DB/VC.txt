@@ -53,7 +53,7 @@ MSI
 2010
 715
 3600
-1
+2
 11
 3
 2
@@ -83,3 +83,15 @@ MSI
 3
 16
 D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/GTX780.jpg
+GeForce GTX 550 Ti
+83
+Nvidia
+2011
+900
+4100
+2
+11
+4.1
+2
+16
+D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/Gtx550 ti.jpg

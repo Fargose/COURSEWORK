@@ -5,7 +5,7 @@ Intel
 2015
 1151
 Немає
-20
+35
 4200
 4
 Images/IntelI77700K.png
@@ -50,22 +50,32 @@ Intel HD Graphics 3000
 2
 D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/intelduo.jpg
 Intel Core i7-4790
-1151
+145
 Intel
-2014
+2012
 1151
 Intel HD Graphics 4000
 8
-3600
+4200
 4
 D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/inteli74790.jpg
 Intel Core i5-2300
-180
+120
 Intel
-2013
+2011
 1155
 Intel HD Graphics 3000
 6
 2800
 4
 D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/inteli52300.jpg
+Intel Core i3 530
+117
+Ubisoft
+2010
+1155
+Intel HD Graphics 3000
+4
+2800
+2
+D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/i3530.jpg

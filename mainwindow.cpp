@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("FerumChecker 1.1");
     ListCPU.read("DB/CPU.txt");
-    ListMB.read("DB/MBB.txt");
+    ListMB.read("DB/MB.txt");
     ListMB.print(ui->listWidget);
     ListOZU.read("DB/OZU.txt");
     ListVC.read("DB/VC.txt");
@@ -58,12 +58,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->HWImage->setToolTip("Відсутнє");
     ui->listWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     CurrentComp->Show(ui->CompInformation);
-    ui->CompMenu->addAction("&Підібрати комп'ютер",this,SLOT(OpenCrComSl()));
+    ui->CompMenu->addAction("&Підібрати комп'ютер",this,SLOT(CreateCompOpen()));
     ui->CompMenu->addAction("&Додати елемент",this,SLOT(NewHardOpen()));
     ClearInf();
     ListComp = new cQueueComp(*CurrentComp);
     ui->pushButton_3->setEnabled(false);
     ui->pushButton_4->setEnabled(false);
+
 
 
 
@@ -88,14 +89,14 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
     if(index == 1)
     {
         ListCPU.print(ui->listWidget);
-        ui->pushButton->setText("Додати");
+        ui->AddButton->setText("Додати");
         ClearInf();
 
     }
     else if(index == 0)
     {
         ListMB.print(ui->listWidget);
-        ui->pushButton->setText("Додати");
+        ui->AddButton->setText("Додати");
         ClearInf();
 
 
@@ -103,14 +104,14 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
     else if(index == 2)
     {
         ListOZU.print(ui->listWidget);
-        ui->pushButton->setText("Додати");
+        ui->AddButton->setText("Додати");
         ClearInf();
 
     }
     else if(index == 3)
     {
         ListVC.print(ui->listWidget);
-        ui->pushButton->setText("Додати");
+        ui->AddButton->setText("Додати");
         ClearInf();
 
 
@@ -118,7 +119,7 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
     else if(index == 4)
     {
         ListHD.print(ui->listWidget);
-        ui->pushButton->setText("Додати");
+        ui->AddButton->setText("Додати");
         ClearInf();
 
 
@@ -126,7 +127,7 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
     else if(index == 5)
     {
         ListSW.print(ui->listWidget);
-        ui->pushButton->setText("Перевірити");
+        ui->AddButton->setText("Перевірити");
         ui->MinLabel->setText("Мінімальні вимоги");
         ui->BestLabel->setText("Рекомендовані вимоги");
         ui->CheckResLabl->setText("Cумісність: ");
@@ -144,7 +145,7 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 
 
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_AddButton_clicked()
 {
     if(ui->listWidget->currentRow() >=0)
     {
@@ -273,7 +274,7 @@ void MainWindow::on_pushButton_clicked()
                     ui->CheckResNum->setStyleSheet("color:yellow");
 
                 }
-                if(_rs >= 35 && _rs < 50)
+                if(_rs >= 15 && _rs < 50)
                 {
                     ui->BestLabel->setStyleSheet("color:red");
                     ui->MinLabel->setStyleSheet("color:orange");
@@ -282,7 +283,7 @@ void MainWindow::on_pushButton_clicked()
                     ui->CheckResNum->setStyleSheet("color:orange");
 
                 }
-                if(_rs < 35)
+                if(_rs < 15)
                 {
                     ui->BestLabel->setStyleSheet("color:red");
                     ui->MinLabel->setStyleSheet("color:red");
@@ -403,9 +404,9 @@ void MainWindow::on_MBCh()
 
 
     }
-    ui->pushButton->setEnabled(false);
+    ui->AddButton->setEnabled(false);
     ui->DelBut->setEnabled(false);
-    ui->pushButton_2->setEnabled(false);
+    ui->EditButton->setEnabled(false);
 
 }
 
@@ -418,9 +419,9 @@ void MainWindow::on_CPUCh()
         CurrentComp->Show(ui->CompInformation);
 
     }
-    ui->pushButton->setEnabled(false);
+    ui->AddButton->setEnabled(false);
     ui->DelBut->setEnabled(false);
-    ui->pushButton_2->setEnabled(false);
+    ui->EditButton->setEnabled(false);
 
 }
 
@@ -433,9 +434,9 @@ void MainWindow::on_VCCh()
         CurrentComp->Show(ui->CompInformation);
 
     }
-    ui->pushButton->setEnabled(false);
+    ui->AddButton->setEnabled(false);
     ui->DelBut->setEnabled(false);
-    ui->pushButton_2->setEnabled(false);
+    ui->EditButton->setEnabled(false);
 
 }
 
@@ -448,9 +449,9 @@ void MainWindow::on_OZU1Ch()
         CurrentComp->Show(ui->CompInformation);
 
     }
-    ui->pushButton->setEnabled(false);
+    ui->AddButton->setEnabled(false);
     ui->DelBut->setEnabled(false);
-    ui->pushButton_2->setEnabled(false);
+    ui->EditButton->setEnabled(false);
 
 }
 void MainWindow::on_OZU2Ch()
@@ -462,9 +463,9 @@ void MainWindow::on_OZU2Ch()
         CurrentComp->Show(ui->CompInformation);
 
     }
-    ui->pushButton->setEnabled(false);
+    ui->AddButton->setEnabled(false);
     ui->DelBut->setEnabled(false);
-    ui->pushButton_2->setEnabled(false);
+    ui->EditButton->setEnabled(false);
 
 }
 
@@ -478,17 +479,17 @@ void MainWindow::on_HWCh()
         CurrentComp->Show(ui->CompInformation);
 
     }
-    ui->pushButton->setEnabled(false);
+    ui->AddButton->setEnabled(false);
     ui->DelBut->setEnabled(false);
-    ui->pushButton_2->setEnabled(false);
+    ui->EditButton->setEnabled(false);
 
 }
 
 void MainWindow::on_listWidget_pressed(const QModelIndex &index)
 {
-    ui->pushButton->setEnabled(true);
+    ui->AddButton->setEnabled(true);
     ui->DelBut->setEnabled(true);
-    ui->pushButton_2->setEnabled(true);
+    ui->EditButton->setEnabled(true);
     ui->ImageLabel->clear();
     ui->TextInfo->clear();
     if(ui->comboBox->currentIndex() == 1)
@@ -522,13 +523,13 @@ void MainWindow::on_listWidget_pressed(const QModelIndex &index)
     }
 }
 
-void MainWindow::OpenCrComSl()
+void MainWindow::CreateCompOpen()
 {
-    Dialog_CreateComp * DL = new Dialog_CreateComp;
-    connect(this,SIGNAL(SWList(cHardList<cSoftware>)),DL,SLOT(PrCSW(cHardList<cSoftware>)));
-    emit SWList(ListSW);
-    connect(DL,SIGNAL(TransInf(infForCreate)),this,SLOT(CreateZbComp(infForCreate)));
-    DL->exec();
+    Dialog_CreateComp * CreateDialog = new Dialog_CreateComp;
+    connect(this,SIGNAL(TransSWList(cWareList<cSoftware>)),CreateDialog,SLOT(PrCSW(cWareList<cSoftware>)));
+    emit TransSWList(ListSW);
+    connect(CreateDialog,SIGNAL(TransInf(infForCreate)),this,SLOT(CreateZbComp(infForCreate)));
+    CreateDialog->exec();
 
 }
 
@@ -540,7 +541,7 @@ void MainWindow::ClearInf()
     ui->MinLabel->setStyleSheet("color:black");
     ui->SettingsLabelNumber->setStyleSheet("color:black");
     ui->CheckResNum->setStyleSheet("color:black");
-
+    ui->CheckResNum->setText("");
     ui->groupBox->hide();
 }
 
@@ -550,9 +551,9 @@ void MainWindow::ClearInf()
 
 void MainWindow::on_RefreshButton_clicked()
 {
-    ui->pushButton->setEnabled(false);
+    ui->AddButton->setEnabled(false);
     ui->DelBut->setEnabled(false);
-    ui->pushButton_2->setEnabled(false);
+    ui->EditButton->setEnabled(false);
     ui->pushButton_3->setEnabled(false);
     ui->pushButton_4->setEnabled(false);
     ListCPU.Clear();
@@ -562,7 +563,7 @@ void MainWindow::on_RefreshButton_clicked()
     ListHD.Clear();
     ListSW.Clear();
     ListCPU.read("DB/CPU.txt");
-    ListMB.read("DB/MBB.txt");
+    ListMB.read("DB/MB.txt");
     ListMB.print(ui->listWidget);
     ListOZU.read("DB/OZU.txt");
     ListVC.read("DB/VC.txt");
@@ -714,20 +715,20 @@ void MainWindow::CreateZbComp(infForCreate ifc)
             }
         }
     }
-    QMessageBox::information(0,"Помилка збірки!","Неможливо зібрати збірку за такою ціною!");
+    QMessageBox::information(0,"Помилка збірки!","Неможливо зібрати ПК за такою ціною!");
 
 }
 
 void MainWindow::NewHardOpen()
 {
-    newhard * HL = new newhard() ;
+    newhard * NewDialog = new newhard() ;
 
-connect(this,SIGNAL(Lists(cHardList<cCPU>,cHardList<cVideoCard>)),HL,SLOT(PrCSW(cHardList<cCPU>,cHardList<cVideoCard>)));
-    connect(HL,SIGNAL(TransInf(DataHW,int)),this,SLOT(NewHard(DataHW,int)));
+connect(this,SIGNAL(TransLists(cWareList<cCPU>,cWareList<cVideoCard>)),NewDialog,SLOT(PrCSW(cWareList<cCPU>,cWareList<cVideoCard>)));
+    connect(NewDialog,SIGNAL(TransInf(DataHW,int)),this,SLOT(NewHard(DataHW,int)));
 
 
-    emit Lists(ListCPU,ListVC);
-    HL->exec();
+    emit TransLists(ListCPU,ListVC);
+    NewDialog->exec();
 }
 
 void MainWindow::NewHard(DataHW HW, int i)
@@ -747,7 +748,7 @@ void MainWindow::NewHard(DataHW HW, int i)
         cMotherBoard* buf = new cMotherBoard(&HW);
         ListMB.Add(buf);
         ui->pushButton_4->setEnabled(false);
-        ListMB.PrintTF("DB/MBB.txt",i);
+        ListMB.PrintTF("DB/MB.txt",i);
         ListMB.print(ui->listWidget);
         ui->comboBox->setCurrentIndex(i);
     }
@@ -811,7 +812,7 @@ void MainWindow::on_DelBut_clicked()
         if(j== 0)
         {
             ListMB.DeleteIn(i);
-    ListMB.PrintTF("DB/MBB.txt",j);
+    ListMB.PrintTF("DB/MB.txt",j);
             ListMB.print(ui->listWidget);
         }
         if(j == 1)
@@ -848,9 +849,9 @@ void MainWindow::on_DelBut_clicked()
     }
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_EditButton_clicked()
 {
-    hardedit * HE = new hardedit();
+    hardedit * EditDialog = new hardedit();
     DataHW* HW;
     if(ui->listWidget->currentRow() >= 0)
     {
@@ -878,13 +879,13 @@ void MainWindow::on_pushButton_2_clicked()
     {
         HW = ListSW.getEl(ui->listWidget->currentRow())->GetData();
     }
-    connect(this,SIGNAL(ChangeLair(int,DataHW*)),HE,SLOT(ChangeLair(int,DataHW*)));
-    connect(HE,SIGNAL(TransHW(DataHW*)),this,SLOT(HWEdit(DataHW*)));
-    connect(this,SIGNAL(Lists(cHardList<cCPU>,cHardList<cVideoCard>)),HE,SLOT(PrCSW(cHardList<cCPU>,cHardList<cVideoCard>)));
-     emit Lists(ListCPU,ListVC);
+    connect(this,SIGNAL(ChangeLair(int,DataHW*)),EditDialog,SLOT(ChangeLair(int,DataHW*)));
+    connect(EditDialog,SIGNAL(TransHW(DataHW*)),this,SLOT(HWEdit(DataHW*)));
+    connect(this,SIGNAL(TransLists(cWareList<cCPU>,cWareList<cVideoCard>)),EditDialog,SLOT(PrCSW(cWareList<cCPU>,cWareList<cVideoCard>)));
+     emit TransLists(ListCPU,ListVC);
     emit ChangeLair(ui->comboBox->currentIndex(),HW);
 
-    HE->exec();
+    EditDialog->exec();
     }
 
 
@@ -900,7 +901,7 @@ void MainWindow::HWEdit(DataHW * _d)
             ListMB.getEl(ui->listWidget->currentRow())->setData(_d);
             ListMB.ShowInf(ui->listWidget->currentRow(),ui->TextInfo,ui->ImageLabel);
             ListMB.print(ui->listWidget);
-            ListMB.PrintTF("DB/MBB.txt",0);
+            ListMB.PrintTF("DB/MB.txt",0);
 
 
         }
@@ -990,4 +991,13 @@ void MainWindow::on_pushButton_4_clicked()
     }
 
 
+}
+
+void MainWindow::on_listWidget_currentRowChanged(int currentRow)
+{
+    if(ui->comboBox->currentIndex() == 5)
+    {
+    ClearInf();
+    ui->groupBox->show();
+    }
 }

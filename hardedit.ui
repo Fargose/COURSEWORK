@@ -334,7 +334,7 @@
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>30</y>
+       <y>40</y>
        <width>69</width>
        <height>22</height>
       </rect>
@@ -851,21 +851,6 @@
       <string>Обсяг пам'яті</string>
      </property>
     </widget>
-    <zorder>pcxvv</zorder>
-    <zorder>pcxxv</zorder>
-    <zorder>image_show</zorder>
-    <zorder>label_17</zorder>
-    <zorder>label_18</zorder>
-    <zorder>CFrequency</zorder>
-    <zorder>MFrequency</zorder>
-    <zorder>label_19</zorder>
-    <zorder>label_20</zorder>
-    <zorder>label_21</zorder>
-    <zorder>DirectX</zorder>
-    <zorder>label_22</zorder>
-    <zorder>OpenGL</zorder>
-    <zorder>memv</zorder>
-    <zorder>label_23</zorder>
    </widget>
    <widget class="QWidget" name="page_5">
     <widget class="QLabel" name="label_27">

@@ -29,7 +29,7 @@ private slots:
     void on_comboBox_currentIndexChanged(int index);
 
 
-    void on_pushButton_clicked();
+    void on_AddButton_clicked();
 
 
 
@@ -60,7 +60,7 @@ private slots:
 
     void on_listWidget_pressed(const QModelIndex &index);
 
-    void OpenCrComSl();
+    void CreateCompOpen();
 
     void ClearInf();
 
@@ -78,7 +78,7 @@ private slots:
 
     void on_DelBut_clicked();
 
-    void on_pushButton_2_clicked();
+    void on_EditButton_clicked();
 
     void HWEdit(DataHW*);
 
@@ -86,23 +86,25 @@ private slots:
 
     void on_pushButton_4_clicked();
 
+    void on_listWidget_currentRowChanged(int currentRow);
+
 private:
     Ui::MainWindow *ui;
-    cHardList<cCPU>  ListCPU;
-    cHardList<cMotherBoard>  ListMB;
-    cHardList<cOZU>  ListOZU;
-    cHardList<cVideoCard>  ListVC;
-    cHardList<cHardDrive> ListHD;
-    cHardList<cSoftware> ListSW;
+    cWareList<cCPU>  ListCPU;
+    cWareList<cMotherBoard>  ListMB;
+    cWareList<cOZU>  ListOZU;
+    cWareList<cVideoCard>  ListVC;
+    cWareList<cHardDrive> ListHD;
+    cWareList<cSoftware> ListSW;
     cComputer * CurrentComp;
     QLabel * lbl[6];
     cQueueComp* ListComp;
 
 signals:
 
-    void SWList(cHardList<cSoftware>);
+    void TransSWList(cWareList<cSoftware>);
 
-    void Lists(cHardList<cCPU>,cHardList<cVideoCard>);
+    void TransLists(cWareList<cCPU>,cWareList<cVideoCard>);
 
     void ChangeLair(int,DataHW*);
 

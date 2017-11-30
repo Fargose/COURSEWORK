@@ -21,8 +21,8 @@ private:
     Ui::newhard *ui;
     DataHW HW;
     cNeed Ned;
-    cHardList<cCPU> ListCpu;
-    cHardList<cVideoCard> ListVC;
+    cWareList<cCPU> ListCpu;
+    cWareList<cVideoCard> ListVC;
 
 signals:
 
@@ -37,7 +37,7 @@ private slots:
     void on_radioButton_4_clicked();
     void on_radioButton_6_clicked();
 
-    void PrCSW(cHardList<cCPU>,cHardList<cVideoCard>);
+    void PrCSW(cWareList<cCPU>,cWareList<cVideoCard>);
 };
 
 #endif // NEWHARD_H

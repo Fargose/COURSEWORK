@@ -5,6 +5,8 @@
 #include "chardware.h"
 #include <QPixmap>
 #include <QFileDialog>
+
+
 namespace Ui {
 class hardedit;
 }
@@ -20,7 +22,7 @@ public:
 private slots:
 
 
-    void PrCSW(cHardList<cCPU>,cHardList<cVideoCard>);
+    void PrCSW(cWareList<cCPU>,cWareList<cVideoCard>);
     void ChangeLair(int,DataHW*);
 
     void on_buttonBox_accepted();
@@ -31,8 +33,8 @@ private:
     Ui::hardedit *ui;
     DataHW HW;
     cNeed Ned;
-    cHardList<cCPU> ListCpu;
-    cHardList<cVideoCard> ListVC;
+    cWareList<cCPU> ListCpu;
+    cWareList<cVideoCard> ListVC;
 
 signals:
 

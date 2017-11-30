@@ -65,7 +65,8 @@ void newhard::on_buttonBox_accepted()
     HW.name = ui->name->text();
     if(HW.name == "")
     {
-        HW.name = "No name";
+        QMessageBox::information(0,"Помилка заповнення.","Заповніть всі поля.");
+        return;
     }
     if(HW.image == ""){
         HW.image = "Images/NoPhoto.jpg";
@@ -73,13 +74,23 @@ void newhard::on_buttonBox_accepted()
     HW.creator = ui->creator->text();
     if(HW.creator == "")
     {
-        HW.creator = "Невідомо";
+        QMessageBox::information(0,"Помилка заповнення.","Заповніть всі поля.");
+        return;
     }
     HW.year = ui->year->currentText().toInt();
     HW.price = ui->price->text().toInt();
+    if(HW.price == 0)
+    {
+        QMessageBox::information(0,"Помилка заповнення.","Заповніть всі поля.");
+        return;
+    }
     if(ui->radioButton->isChecked() == true)
     {
-
+        if(ui->cash->text() == "")
+        {
+            QMessageBox::information(0,"Помилка заповнення.","Заповніть всі поля.");
+            return;
+        }
         HW.frequency =  ui->freq->currentText().toFloat();
         HW.soket = ui->soket->currentText();
         HW.Cash = ui->cash->text().toInt();
@@ -108,6 +119,11 @@ void newhard::on_buttonBox_accepted()
         HW.OpenGl = ui->OpenGL->currentText().toFloat();
         HW.Mfrequency = ui->MFreq->text().toInt();
         HW.Cfrequency = ui->CFreq->text().toInt();
+        if(HW.Cfrequency == 0|| HW.Mfrequency == 0)
+        {
+            QMessageBox::information(0,"Помилка заповнення.","Заповніть всі поля.");
+            return;
+        }
         HW.memory = ui->memVc->currentText().toInt();
 
         HW.pcxx = ui->pcxx->currentText().toFloat();
@@ -430,7 +446,7 @@ void newhard::on_radioButton_6_clicked()
     ui->Minl->show();
 }
 
-void newhard::PrCSW(cHardList<cCPU> chc, cHardList<cVideoCard> cvc)
+void newhard::PrCSW(cWareList<cCPU> chc, cWareList<cVideoCard> cvc)
 {
     ListCpu = chc;
     ListVC = cvc;

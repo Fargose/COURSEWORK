@@ -3,10 +3,43 @@ The Witcher 3: Wild Hunt
 35
 CD Project Red
 2015
-Intel Core i7-3770
-GeForce GTX 770
-8
 Intel Core i5-2500K
 GeForce GTX 660
 6
+Intel Core i7-3770
+GeForce GTX 770
+8
 D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/WITCHER3.jpg
+The Elder Scrolls V: Skyrim
+35
+Bethesda
+2011
+Intel Core 2 Duo
+GeForce 8800 GT
+4
+Intel Core i5-2500K
+GeForce GTX 460
+6
+D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/Skyrim_Cover.png
+Far Cry 3
+30
+Bethesda
+2012
+Intel Core 2 Duo
+GeForce 8800 GT
+4
+Intel Core i3 530
+GeForce GTX 460
+6
+D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/farcry3.jpg
+FallOut 4
+45
+Bethesda
+2016
+Intel Core i5-2300
+GeForce GTX 550 Ti
+8
+Intel Core i7-4790
+GeForce GTX 780
+8
+D:/Kursova/build-FerumChecker-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/Images/fallout4.jpg
